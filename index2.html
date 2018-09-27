@@ -1,0 +1,566 @@
+﻿<!--
+Autores: Felipe Gomes
+		 Gustavo Soares
+		 Joel Felipe
+-->
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta http-equiv="x-ua-compatible" content="ie=edge">
+	<title>LibSys</title>
+	<!-- Font Awesome -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	<!-- Bootstrap core CSS -->
+	<link href="css/bootstrap.min.css" rel="stylesheet">
+	<!-- Material Design Bootstrap -->
+	<link href="css/mdb.min.css" rel="stylesheet">
+	<!-- Your custom styles (optional) -->
+	<link href="css/style.css" rel="stylesheet">
+	<!-- More dependences -->
+
+	<!-- More dependences -->
+	<!-- Icon -->
+	<link rel="shortcut icon" href="https://banner2.kisspng.com/20180319/ijw/kisspng-black-white-computer-icons-book-png-book-icon-5ab02df11585d6.9013344215214955370882.jpg" />
+</head>
+
+<body>
+
+    <!--Main Navigation-->
+    <header>
+        <nav class="navbar fixed-top navbar-expand-lg navbar-dark scrolling-navbar" style="background-color: #2E2E2E">
+            <div class="container">
+                <a class="navbar-brand h1 mb-0" href="#">
+                    <img src="https://drive.google.com/uc?id=1A9hBkYD_Nkb2W9dg7z31jt87jcnSbRcU" height="30" alt="Logo do site">
+                </a>
+                <!--</div>-->
+                <!--<div class="container">-->
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSite">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarSite">
+
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="navdrop">
+                                Acessar<i class="fa fa-user ml-2"></i>
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#login">Login</a>
+                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#cadastro">Cadastrar</a>
+                            </div>
+                        </li>
+                    </ul>
+
+                </div>
+            </div>
+        </nav>
+        <!-- dropdown do usuario -->
+        <script>
+			window.onload = function validar() {
+				alert("Erro no cadastro ou usuário é menor de 16 anos.");
+			}
+            function Login() {
+                var done = 0;
+                var usuario = document.getElementsByName('user')[0].value;
+                usuario = usuario.toLowerCase();
+                var senha = document.getElementsByName('password')[0].value;
+                seha = senha.toLowerCase();
+                if (usuario == "admin" && senha == "admin") {
+                    window.location = "../libsys/pages/user-page.html";
+                    done = 1;
+                }
+                if (done == 0) { alert("Dados incorretos, tente novamente"); }
+            }
+        </script>
+        <!-- Modal popup login-->
+        <div class="modal fade" id="login" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Acessar o LibSys</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form method="post" action="ope.php" id="formemail" name="formemail">
+                            <!-- login -->
+                            <div class="md-form form-sm">
+                                <!--<label for="recipient-user" class="col-form-label"><i class="fa fa-user mr-2"></i>Usuário:</label>
+        <input type="text" class="form-control" id="recipient-user" name="user">-->
+                                <i class="fa fa-envelope prefix"></i>
+                                <input type="text" id="user" class="form-control form-control-sm" name="user">
+                                <label for="user">Your email</label>
+                            </div>
+                            <!-- senha -->
+                            <div class="md-form form-sm">
+                                <i class="fa fa-lock prefix"></i>
+                                <input type="password" id="password" class="form-control form-control-sm" name="password">
+                                <label for="password">Your password</label>
+                            </div>
+                            <div class="text-center mt-2">
+                                <input type="submit" class="btn btn-primary" value="Log in"/>
+                            </div>
+                        </form>
+                    </div>
+                    
+                    <div class="modal-footer display-footer">
+                        <div class="options text-center text-md-right mt-1">
+                            <p>Not a member? <a href="#" data-toggle="modal" data-target="#cadastro" class="blue-text">Sign Up</a></p>
+                            <p>Forgot <a href="#" class="blue-text">Password?</a></p>
+                        </div>
+                        <button type="button" class="btn btn-outline-primary waves-effects ml-auto" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Modal popup login -->
+        <!-- Modal popup cadastro -->
+        <div class="modal fade" id="cadastro" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLongTitle">Inscreva-se</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<form method="post" action="cad.php" id="formcad" name="formcad">
+						<div class="modal-body">
+							<!-- nome do usuario -->
+							<div class="form-group">
+								<label for="user" class="col-form-label">Nome (Usuário):</label>
+								<input name="nome" type="text" class="form-control" id="nome">
+							</div>
+							<!-- email -->
+							<div class="form-group">
+								<label for="email" class="col-form-label">Email:</label>
+								<input name="email" type="email" class="form-control" id="email">
+							</div>
+							<!-- idade -->
+							<div class="form-group">
+								<label for="idade" class="col-form-label">Idade:</label>
+								<input name="idade" type="text" class="form-control" id="idade">
+							</div>
+							<!-- senha -->
+							<div class="form-group">
+								<label for="senha" class="col-form-label">Senha:</label>
+								<input name="senha" type="password" class="form-control" id="senha">
+							</div>
+
+						</div>
+						<div class="modal-footer">
+							<input type="button" class="btn btn-secondary" data-dismiss="modal" value="Sair" />
+							<input type="submit" class="btn btn-primary" value="Inscrever-se" />
+						</div>
+					</form>
+				</div>
+            </div>
+        </div>
+        <!-- Modal popup cadastro -->
+        <!--Mask-->
+        <div id="intro" class="view">
+            <div class="container-fluid full-bg-img img-fluid d-block d-flex align-items-center justify-content-center">
+                <div class="row justify-content-center d-flex justify-content-center">
+                    <div class="col-md-10 text-center">
+                        <!--Heading-->
+                        <h2 id="title" class="display-3 font-bold gray-text mb-2">LibSys</h2>
+                        <!--Divider-->
+                        <hr class="hr-dark" />
+                        <!--Description-->
+                        <h4 class="gray-text my-3">
+                            Sua Biblioteca Online para compra venda e aluguel de livros!
+                        </h4>
+                        <button type="button" onclick="window.location.href='#first_main'" class="btn btn-outline-dark">Confira o Acervo<i class="fa fa-book ml-2"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--Mask-->
+    </header>
+    <!--Main Navigation-->
+    
+	<!--Main Layout-->
+    <main>
+        <div class="row justify-content-center d-flex justify-content-center">
+            <h4 class="gray-text my-3 mr-5">Inscreva-se agora mesmo para aproveitar nossas novidades</h4><br />
+            <button type="button" class="btn btn-outline-dark mr-3" data-toggle="modal" data-target="#cadastro">Inscreva-se</button>
+            <button type="button" class="btn btn-outline-dark" data-toggle="modal" data-target="#login">Logar<i class="fa fa-user ml-2"></i></button>
+
+        </div>
+        <div id="first_main">
+			<!-- container central para mensagem da main -->
+			<!-- acervo literario -->
+			<div  class="row justify-content-center d-flex justify-content-center">
+				<div class="col-md-10 text-center" style="margin-top:5%;">
+					<!--Heading-->
+					<h2 class="display-4 font-bold white-text mb-2">Confira nosso Acervo</h2>
+					<!--Divider-->
+					<hr class="hr-light" />
+					<h4 class="white-text my-3">
+						Livros para todos os gostos e idades
+					</h4>
+				</div>
+			</div>
+			<!-- acervo literario -->
+			<!--Carousel Wrapper-->
+			<div id="multi-item-example-1" class="carousel slide carousel-multi-item" data-ride="carousel">
+				<!--Slides-->
+
+				<div class="carousel-inner" role="listbox" style="margin: 70px; padding:10px;">
+
+					<!--First slide-->
+					<div class="carousel-item active">
+						<div class="row justify-content-center">
+							<div class="col-md-2">
+								<div class="card " style="width: 10rem; height: 20rem;">
+									<img class="card-img-top" src="https://upload.wikimedia.org/wikipedia/pt/d/d9/Capa_do_livro_Como_Ser_um_Pirata.jpg" alt="Card image cap">
+									<div class="card-body">
+										<p class="card-title" style="margin-top:-15px; font-size:14px;">Como ser um pirata</p>
+										<p class="card-text" style="margin-top:-15px;">Soares, Gustavo</p>
+									</div>
+								</div>
+							</div>
+
+							<div class="col-md-2">
+								<div class="card " style="width: 10rem; height: 20rem;">
+									<img class="card-img-top" src="https://upload.wikimedia.org/wikipedia/pt/d/d9/Capa_do_livro_Como_Ser_um_Pirata.jpg" alt="Card image cap">
+									<div class="card-body">
+										<p class="card-title" style="margin-top:-15px; font-size:14px;">Como ser um pirata</p>
+										<p class="card-text" style="margin-top:-15px;">Soares, Gustavo</p>
+									</div>
+								</div>
+							</div>
+
+							<div class="col-md-2">
+								<div class="card " style="width: 10rem; height: 20rem;">
+									<img class="card-img-top" src="https://upload.wikimedia.org/wikipedia/pt/d/d9/Capa_do_livro_Como_Ser_um_Pirata.jpg" alt="Card image cap">
+									<div class="card-body">
+										<p class="card-title" style="margin-top:-15px; font-size:14px;">Como ser um pirata</p>
+										<p class="card-text" style="margin-top:-15px;">Soares, Gustavo</p>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-2">
+								<div class="card " style="width: 10rem; height: 20rem;">
+									<img class="card-img-top" src="https://upload.wikimedia.org/wikipedia/pt/d/d9/Capa_do_livro_Como_Ser_um_Pirata.jpg" alt="Card image cap">
+									<div class="card-body">
+										<p class="card-title" style="margin-top:-15px; font-size:14px;">Como ser um pirata</p>
+										<p class="card-text" style="margin-top:-15px;">Soares, Gustavo</p>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!--/.First slide-->
+					<!--Second slide-->
+					<div class="carousel-item">
+						<div class="row justify-content-center">
+							<div class="col-md-2">
+								<div class="card " style="width: 10rem; height: 20rem;">
+									<img class="card-img-top" src="https://upload.wikimedia.org/wikipedia/pt/9/9c/Capa_do_livro_Como_Navegar_em_uma_Tempestade_de_Drag%C3%A3o.jpg" alt="Card image cap">
+									<div class="card-body">
+										<p class="card-title" style="margin-top:-15px; font-size:14px;">Como ser um pirata</p>
+										<p class="card-text" style="margin-top:-15px;">Soares, Gustavo</p>
+									</div>
+								</div>
+							</div>
+
+							<div class="col-md-2">
+								<div class="card " style="width: 10rem; height: 20rem;">
+									<img class="card-img-top" src="https://upload.wikimedia.org/wikipedia/pt/9/9c/Capa_do_livro_Como_Navegar_em_uma_Tempestade_de_Drag%C3%A3o.jpg" alt="Card image cap">
+									<div class="card-body">
+										<p class="card-title" style="margin-top:-15px; font-size:14px;">Como ser um pirata</p>
+										<p class="card-text" style="margin-top:-15px;">Soares, Gustavo</p>
+									</div>
+								</div>
+							</div>
+
+							<div class="col-md-2">
+								<div class="card " style="width: 10rem; height: 20rem;">
+									<img class="card-img-top" src="https://upload.wikimedia.org/wikipedia/pt/9/9c/Capa_do_livro_Como_Navegar_em_uma_Tempestade_de_Drag%C3%A3o.jpg" alt="Card image cap">
+									<div class="card-body">
+										<p class="card-title" style="margin-top:-15px; font-size:14px;">Como ser um pirata</p>
+										<p class="card-text" style="margin-top:-15px;">Soares, Gustavo</p>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-2">
+								<div class="card " style="width: 10rem; height: 20rem;">
+									<img class="card-img-top" src="https://upload.wikimedia.org/wikipedia/pt/9/9c/Capa_do_livro_Como_Navegar_em_uma_Tempestade_de_Drag%C3%A3o.jpg" alt="Card image cap">
+									<div class="card-body">
+										<p class="card-title" style="margin-top:-15px; font-size:14px;">Como ser um pirata</p>
+										<p class="card-text" style="margin-top:-15px;">Soares, Gustavo</p>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!--/.Second slide-->
+					<!--Third slide-->
+					<div class="carousel-item">
+						<div class="row justify-content-center">
+							<div class="col-md-2">
+								<div class="card " style="width: 10rem; height: 20rem;">
+									<img class="card-img-top" src="http://qualitymark.com.br/media/catalog/product/cache/1/image/9df78eab33525d08d6e5fb8d27136e95/7/6/762.jpg" alt="Card image cap">
+									<div class="card-body">
+										<p class="card-title" style="margin-top:-15px; font-size:14px;">Como ser um pirata</p>
+										<p class="card-text" style="margin-top:-15px;">Soares, Gustavo</p>
+									</div>
+								</div>
+							</div>
+
+							<div class="col-md-2">
+								<div class="card " style="width: 10rem; height: 20rem;">
+									<img class="card-img-top" src="http://qualitymark.com.br/media/catalog/product/cache/1/image/9df78eab33525d08d6e5fb8d27136e95/7/6/762.jpg" alt="Card image cap">
+									<div class="card-body">
+										<p class="card-title" style="margin-top:-15px; font-size:14px;">Como ser um pirata</p>
+										<p class="card-text" style="margin-top:-15px;">Soares, Gustavo</p>
+									</div>
+								</div>
+							</div>
+
+							<div class="col-md-2">
+								<div class="card " style="width: 10rem; height: 20rem;">
+									<img class="card-img-top" src="http://qualitymark.com.br/media/catalog/product/cache/1/image/9df78eab33525d08d6e5fb8d27136e95/7/6/762.jpg" alt="Card image cap">
+									<div class="card-body">
+										<p class="card-title" style="margin-top:-15px; font-size:14px;">Como ser um pirata</p>
+										<p class="card-text" style="margin-top:-15px;">Soares, Gustavo</p>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-2">
+								<div class="card " style="width: 10rem; height: 20rem;">
+									<img class="card-img-top" src="http://qualitymark.com.br/media/catalog/product/cache/1/image/9df78eab33525d08d6e5fb8d27136e95/7/6/762.jpg" alt="Card image cap">
+									<div class="card-body">
+										<p class="card-title" style="margin-top:-15px; font-size:14px;">Como ser um pirata</p>
+										<p class="card-text" style="margin-top:-15px;">Soares, Gustavo</p>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!--/.Third slide-->
+				</div>
+				<!--/.Slides-->
+				<!--Controls-->
+				<a class="carousel-control-prev" href="#multi-item-example-1" role="button" data-slide="prev">
+					<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+					<span class="sr-only">Previous</span>
+				</a>
+				<a class="carousel-control-next" href="#multi-item-example-1" role="button" data-slide="next">
+					<span class="carousel-control-next-icon" aria-hidden="true"></span>
+					<span class="sr-only">Next</span>
+				</a>
+				<!--/.Controls-->
+
+			</div>
+            <!--/.Carousel Wrapper-->
+
+			<!-- Segundo Carousel-->
+			<!--Carousel Wrapper-->
+			<div id="multi-item-example-2" class="carousel slide carousel-multi-item" data-ride="carousel">
+				<!--Slides-->
+
+				<div class="carousel-inner" role="listbox" style="margin: 70px; padding:10px;">
+
+					<!--First slide-->
+					<div class="carousel-item active">
+						<div class="row justify-content-center">
+							<div class="col-md-2">
+								<div class="card " style="width: 10rem; height: 20rem;">
+									<img class="card-img-top" src="https://upload.wikimedia.org/wikipedia/pt/d/d9/Capa_do_livro_Como_Ser_um_Pirata.jpg" alt="Card image cap">
+									<div class="card-body">
+										<p class="card-title" style="margin-top:-15px; font-size:14px;">Como ser um pirata</p>
+										<p class="card-text" style="margin-top:-15px;">Soares, Gustavo</p>
+									</div>
+								</div>
+							</div>
+
+							<div class="col-md-2">
+								<div class="card " style="width: 10rem; height: 20rem;">
+									<img class="card-img-top" src="https://upload.wikimedia.org/wikipedia/pt/d/d9/Capa_do_livro_Como_Ser_um_Pirata.jpg" alt="Card image cap">
+									<div class="card-body">
+										<p class="card-title" style="margin-top:-15px; font-size:14px;">Como ser um pirata</p>
+										<p class="card-text" style="margin-top:-15px;">Soares, Gustavo</p>
+									</div>
+								</div>
+							</div>
+
+							<div class="col-md-2">
+								<div class="card " style="width: 10rem; height: 20rem;">
+									<img class="card-img-top" src="https://upload.wikimedia.org/wikipedia/pt/d/d9/Capa_do_livro_Como_Ser_um_Pirata.jpg" alt="Card image cap">
+									<div class="card-body">
+										<p class="card-title" style="margin-top:-15px; font-size:14px;">Como ser um pirata</p>
+										<p class="card-text" style="margin-top:-15px;">Soares, Gustavo</p>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-2">
+								<div class="card " style="width: 10rem; height: 20rem;">
+									<img class="card-img-top" src="https://upload.wikimedia.org/wikipedia/pt/d/d9/Capa_do_livro_Como_Ser_um_Pirata.jpg" alt="Card image cap">
+									<div class="card-body">
+										<p class="card-title" style="margin-top:-15px; font-size:14px;">Como ser um pirata</p>
+										<p class="card-text" style="margin-top:-15px;">Soares, Gustavo</p>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!--/.First slide-->
+					<!--Second slide-->
+					<div class="carousel-item">
+						<div class="row justify-content-center">
+							<div class="col-md-2">
+								<div class="card " style="width: 10rem; height: 20rem;">
+									<img class="card-img-top" src="https://upload.wikimedia.org/wikipedia/pt/9/9c/Capa_do_livro_Como_Navegar_em_uma_Tempestade_de_Drag%C3%A3o.jpg" alt="Card image cap">
+									<div class="card-body">
+										<p class="card-title" style="margin-top:-15px; font-size:14px;">Como ser um pirata</p>
+										<p class="card-text" style="margin-top:-15px;">Soares, Gustavo</p>
+									</div>
+								</div>
+							</div>
+
+							<div class="col-md-2">
+								<div class="card " style="width: 10rem; height: 20rem;">
+									<img class="card-img-top" src="https://upload.wikimedia.org/wikipedia/pt/9/9c/Capa_do_livro_Como_Navegar_em_uma_Tempestade_de_Drag%C3%A3o.jpg" alt="Card image cap">
+									<div class="card-body">
+										<p class="card-title" style="margin-top:-15px; font-size:14px;">Como ser um pirata</p>
+										<p class="card-text" style="margin-top:-15px;">Soares, Gustavo</p>
+									</div>
+								</div>
+							</div>
+
+							<div class="col-md-2">
+								<div class="card " style="width: 10rem; height: 20rem;">
+									<img class="card-img-top" src="https://upload.wikimedia.org/wikipedia/pt/9/9c/Capa_do_livro_Como_Navegar_em_uma_Tempestade_de_Drag%C3%A3o.jpg" alt="Card image cap">
+									<div class="card-body">
+										<p class="card-title" style="margin-top:-15px; font-size:14px;">Como ser um pirata</p>
+										<p class="card-text" style="margin-top:-15px;">Soares, Gustavo</p>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-2">
+								<div class="card " style="width: 10rem; height: 20rem;">
+									<img class="card-img-top" src="https://upload.wikimedia.org/wikipedia/pt/9/9c/Capa_do_livro_Como_Navegar_em_uma_Tempestade_de_Drag%C3%A3o.jpg" alt="Card image cap">
+									<div class="card-body">
+										<p class="card-title" style="margin-top:-15px; font-size:14px;">Como ser um pirata</p>
+										<p class="card-text" style="margin-top:-15px;">Soares, Gustavo</p>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!--/.Second slide-->
+					<!--Third slide-->
+					<div class="carousel-item">
+						<div class="row justify-content-center">
+							<div class="col-md-2">
+								<div class="card " style="width: 10rem; height: 20rem;">
+									<img class="card-img-top" src="http://qualitymark.com.br/media/catalog/product/cache/1/image/9df78eab33525d08d6e5fb8d27136e95/7/6/762.jpg" alt="Card image cap">
+									<div class="card-body">
+										<p class="card-title" style="margin-top:-15px; font-size:14px;">Como ser um pirata</p>
+										<p class="card-text" style="margin-top:-15px;">Soares, Gustavo</p>
+									</div>
+								</div>
+							</div>
+
+							<div class="col-md-2">
+								<div class="card " style="width: 10rem; height: 20rem;">
+									<img class="card-img-top" src="http://qualitymark.com.br/media/catalog/product/cache/1/image/9df78eab33525d08d6e5fb8d27136e95/7/6/762.jpg" alt="Card image cap">
+									<div class="card-body">
+										<p class="card-title" style="margin-top:-15px; font-size:14px;">Como ser um pirata</p>
+										<p class="card-text" style="margin-top:-15px;">Soares, Gustavo</p>
+									</div>
+								</div>
+							</div>
+
+							<div class="col-md-2">
+								<div class="card " style="width: 10rem; height: 20rem;">
+									<img class="card-img-top" src="http://qualitymark.com.br/media/catalog/product/cache/1/image/9df78eab33525d08d6e5fb8d27136e95/7/6/762.jpg" alt="Card image cap">
+									<div class="card-body">
+										<p class="card-title" style="margin-top:-15px; font-size:14px;">Como ser um pirata</p>
+										<p class="card-text" style="margin-top:-15px;">Soares, Gustavo</p>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-2">
+								<div class="card " style="width: 10rem; height: 20rem;">
+									<img class="card-img-top" src="http://qualitymark.com.br/media/catalog/product/cache/1/image/9df78eab33525d08d6e5fb8d27136e95/7/6/762.jpg" alt="Card image cap">
+									<div class="card-body">
+										<p class="card-title" style="margin-top:-15px; font-size:14px;">Como ser um pirata</p>
+										<p class="card-text" style="margin-top:-15px;">Soares, Gustavo</p>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!--/.Third slide-->
+				</div>
+				<!--/.Slides-->
+				<!--Controls-->
+				<a class="carousel-control-prev" href="#multi-item-example-2" role="button" data-slide="prev">
+					<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+					<span class="sr-only">Previous</span>
+				</a>
+				<a class="carousel-control-next" href="#multi-item-example-2" role="button" data-slide="next">
+					<span class="carousel-control-next-icon" aria-hidden="true"></span>
+					<span class="sr-only">Next</span>
+				</a>
+				<!--/.Controls-->
+
+			</div>
+            <!--/.Carousel Wrapper-->
+			<!-- Segundo Carousel-->
+        </div>
+        <!-- container central para mensagem da main -->
+    </main>
+	<!--Main Layout-->
+
+	<!--Footer-->
+	<footer class="page-footer font-small unique-color-dark pt-3">
+
+		<!-- Footer Elements -->
+		<div class="container">
+
+			<!-- Call to action -->
+			<ul class="list-unstyled list-inline text-center py-2">
+				<li class="list-inline-item">
+					<!-- mensagem do footer -->
+					<h5 class="mb-1">Inscreva-se de graça</h5>
+				</li>
+				<li class="list-inline-item">
+					<!-- botao inscrever-se -->
+					<a href="#!" class="btn btn-outline-white btn-rounded" data-toggle="modal" data-target="#cadastro">Inscreva-se!</a>
+				</li>
+			</ul>
+			<!-- Call to action -->
+
+		</div>
+		<!-- Footer Elements -->
+		<!-- Copyright -->
+		<div class="footer-copyright text-center py-3">
+			© 2018 Copyright:
+			<a href="https://mdbootstrap.com/bootstrap-tutorial/"> LibSys Online</a>
+		</div>
+		<!-- Copyright -->
+
+	</footer>
+	<!--Footer-->
+
+    <!-- SCRIPTS -->
+    <!-- JQuery -->
+    <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+    <!-- Bootstrap tooltips -->
+    <script type="text/javascript" src="js/popper.min.js"></script>
+    <!-- Bootstrap core JavaScript -->
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <!-- MDB core JavaScript -->
+    <script type="text/javascript" src="js/mdb.min.js"></script>
+</body>
+
+</html>
