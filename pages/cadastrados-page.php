@@ -7,7 +7,6 @@ Autores: Felipe Gomes
 <html lang="pt-br">
 
 	<head>
-		
         <?=
             session_start();
             if((!isset ($_SESSION['user']) == true) and (!isset ($_SESSION['password']) == true))
@@ -16,6 +15,7 @@ Autores: Felipe Gomes
             unset($_SESSION['password']);
             header('location:index.html');
             }
+						$id = $_SESSION['id'];
             $nome = $_SESSION['nome'];
             $email = $_SESSION['user'];
             $idade = $_SESSION['idade'];
@@ -381,7 +381,7 @@ Autores: Felipe Gomes
 								<div class="input-group btn-group col-md-12" role="group">
 									<form id="form-busca" name="form-busca" class="input-group btn-group" method="post" action="busca-page.php">
 										<input id"busca-digitada" name="busca-digitada" type="text" class="form-control input-lg" placeholder="Buscar"/>
-										<a class=" btn-lg waves-effect" ><i class="fa fa-search mr-1"></i></a>
+										<a class="btn-flat btn-lg waves-effect"><i class="fa fa-search mr-1"></i></a>
 										<?php
 										//armazena o valor digitado em uma variavel para ser usado na consulta
 										require_once("../conection/conexao.php");
@@ -405,7 +405,7 @@ Autores: Felipe Gomes
 							<?php
 							require_once ("../conection/conexao.php");
 							// cria a instrução SQL que vai selecionar os dados
-							$busca="SELECT autor, titulo, preco, imagem, qtd FROM livro WHERE titulo LIKE '%$buscas%' ORDER BY id desc";
+							$busca="SELECT autor, titulo, preco, imagem, qtd FROM livro WHERE id_vendedor=$id ORDER BY id desc";
 							$dados = mysql_query($busca);
 							// transforma os dados em um array
 							$linha = mysql_fetch_assoc($dados);

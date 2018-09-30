@@ -31,7 +31,7 @@ if ((int)$idade < 16){
 }
 
 if ($erro == 0) {
-	
+
 	$sql = "UPDATE usuario  SET nome='$nome', idade='$idade', email='$email', senha='$senha' WHERE id=$id";
 	$result = mysql_query($sql);
 	if (!$result) {

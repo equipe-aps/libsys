@@ -36,7 +36,7 @@ $erro = 0;
 
 if ($erro == 0) {
 	
-	$sql = "INSERT INTO LIVRO (id_vendedor, titulo, autor, preco, descricao, categoria, imagem, qtd) VALUES ('$id', '$titulo', '$autor', '$preco', '$descricao', '$categoria', '$destino', '$qtd')";
+	$sql = "INSERT INTO livro (id_vendedor, titulo, autor, preco, descricao, categoria, imagem, qtd) VALUES ('$id', '$titulo', '$autor', '$preco', '$descricao', '$categoria', '$destino', '$qtd')";
 	$result = mysql_query($sql);
 	if (!$result) {
 		//header('location:index2.html');

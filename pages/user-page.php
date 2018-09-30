@@ -7,7 +7,6 @@ Autores: Felipe Gomes
 <html lang="pt-br">
 
 	<head>
-		
         <?=
             session_start();
             if((!isset ($_SESSION['user']) == true) and (!isset ($_SESSION['password']) == true))
@@ -21,11 +20,11 @@ Autores: Felipe Gomes
             $idade = $_SESSION['idade'];
             $senha = $_SESSION['password'];
         ?>
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 		<meta http-equiv="x-ua-compatible" content="ie=edge">
 		<title>LibSys</title>
-		<?php header("Content-Type: text/html; charset=UTF-8",true);?>
+		
 		<!-- Font Awesome -->
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 		<!-- Bootstrap core CSS -->
@@ -60,14 +59,14 @@ Autores: Felipe Gomes
 					<div class="collapse navbar-collapse" id="navbarSite">
 						<ul class="navbar-nav ml-auto mr-auto">
 							<li class="nav-item">
-								<a href="#" class="nav-link">Início</a>
+								<a href="user-page.php" class="nav-link">Início</a>
 							</li>
 
 							<li class="nav-item dropdown">
 								<a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="navDrop">Vender Livros</a>
 								<div class="dropdown-menu">
 									<a class="dropdown-item" data-toggle="modal" data-target="#cadastrar-livro">Cadastrar Livros</a>
-									<a class="dropdown-item" href="">Livros Cadastrados</a>
+									<a class="dropdown-item" href="cadastrados-page.php">Livros Cadastrados</a>
 									<a class="dropdown-item" data-toggle="modal" data-target="#editar-livro">Editar Livro</a>
 								</div>
 							</li>
@@ -373,22 +372,22 @@ Autores: Felipe Gomes
 			
 			<!-- BUSCA -->
 			<div style="margin-left:25%; margin-bottom:100px; margin-top:-50px" class="align-center justidy-content-center">
-                <div class="container">
+        <div class="container">
 					<div class="row">
 						<div class="col-md-9">
-    						<h2>O que você procura?</h2>
+							<h2>O que você procura?</h2>
 							<div id="custom-search-input">
 								<div class="input-group btn-group col-md-12" role="group">
-									<form id="form-busca" class="input-group btn-group" action="busca-page.php">
-										<input type="text" class="form-control input-lg" placeholder="Buscar" />
-										<a class="btn-flat btn-lg waves-effect" href="busca-page.php"><i class="fa fa-search mr-1"></i></a>
+									<form id="form-busca" name="form-busca" class="input-group btn-group" method="post" action="busca-page.php">
+										<input id="busca-digitada" name="busca-digitada" type="text" class="form-control input-lg" placeholder="Buscar"/>
+										<a class=" btn-lg waves-effect" ><i class="fa fa-search mr-1"></i></a>
 									</form>
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-            </div>
+      </div>
 			<!-- BUSCA-->
 			
             <div id="categoria-didatico" class="banner-categoria justify-content-center">
@@ -399,10 +398,11 @@ Autores: Felipe Gomes
                         <!-- Grid row -->
                         <div class="row">
                             <?php
+							
 							require_once ("../conection/conexao.php");
 
 							// cria a instrução SQL que vai selecionar os dados
-							$sql = "SELECT  autor,  titulo, preco, imagem, qtd FROM LIVRO WHERE categoria='didatico' AND qtd!=0 ORDER BY id desc";
+							$sql = "SELECT id, autor,  titulo, preco, imagem, qtd FROM livro WHERE categoria='didatico' AND qtd!=0 ORDER BY id desc";
 							$dados = mysql_query($sql);
 							// transforma os dados em um array
 							$linha = mysql_fetch_assoc($dados);
@@ -422,41 +422,49 @@ Autores: Felipe Gomes
 								<div class="card align-items-center">
 								<!-- Card image -->
 								<div class="view overlay">
-									<img height="400" width="300" src="../<?=$linha['imagem']?>" class="card-img-top" alt="">
-										<a><div class="mask rgba-white-slight"></div></a>
+									<form method="post" action="livro-detalhado.php">
+										<!--armazena o id do livro para mandar para a  pagina de detalhamento-->
+										<input type="hidden" name="id" value="<?=$linha['id']?>"/>
+										<input name="id" type="image" height="400" width="300" value="<?=$linha['id']?>" src="../<?=$linha['imagem']?>" class="card-img-top" alt=""/>
+									</form>
 								</div>
 								<!-- Card image -->
 								<!-- Card content -->
 								<div class="card-body text-center">
 									<!-- Category & Title -->
-									<a href="" class="grey-text">
+									<a class="grey-text">
 										<h5><?=$linha['autor']?></h5>
 									</a>
 									<h5>
 										<strong>
-											<a href="" class="dark-grey-text"><?=$linha['titulo']?>
-												<span class="badge badge-pill danger-color">NEW</span>
+                                            <a class="dark-grey-text"><?=$linha['titulo']?></a>
+											<span class="badge badge-pill danger-color">NEW</span>
 										</strong>
 									</h5>
 									<p>Qtd: <?=$linha['qtd']?></p>
 									<h4 class="font-weight-bold blue-text">
 										<strong>R$<?=$linha['preco']?></strong>
 									</h4>
+									<form method="post" action="livro-detalhado.php">
+										<!--armazena o id do livro para mandar para a  pagina de detalhamento-->
+										<input type="hidden" name="id" value="<?=$linha['id']?>"/>
+										<button name="id" value="<?=$linha['id']?>" class="btn btn-success">Comprar</button>
+									</form>
 								</div>
 								<!-- Card content -->
-								</div>
-								<!-- Card -->
 							</div>
-							<!-- Grid column -->
-							<!-- teste -->
-							<?php
-										// finaliza o loop que vai mostrar os dados
-										}while($linha = mysql_fetch_assoc($dados));
-									// fim do if 
-									}
-							// tira o resultado da busca da memória
-							mysql_free_result($dados);
-							?>
+							<!-- Card -->
+						</div>
+						<!-- Grid column -->
+						<!-- teste -->
+						<?php
+									// finaliza o loop que vai mostrar os dados
+									}while($linha = mysql_fetch_assoc($dados));
+								// fim do if 
+								}
+						// tira o resultado da busca da memória
+						mysql_free_result($dados);
+						?>
 								
                         </div>
                         <!-- Grid row -->
@@ -476,7 +484,7 @@ Autores: Felipe Gomes
 							require_once ("../conection/conexao.php");
 
 							// cria a instrução SQL que vai selecionar os dados
-							$sql = "SELECT  autor,  titulo, preco, imagem, qtd FROM LIVRO WHERE categoria='fantasia' AND qtd!=0 ORDER BY id desc";
+							$sql = "SELECT id, autor,  titulo, preco, imagem, qtd FROM livro WHERE categoria='fantasia' AND qtd!=0 ORDER BY id desc";
 							$dados = mysql_query($sql);
 							// transforma os dados em um array
 							$linha = mysql_fetch_assoc($dados);
@@ -488,42 +496,47 @@ Autores: Felipe Gomes
 									// inicia o loop que vai mostrar todos os dados
 									do {
 							?>
-							<!-- Grid column -->
+							<!-- teste -->
 							<div class="col-lg-3 col-md-6 mb-lg-0 mb-4" style="margin-top: 2%">
 								<!-- Card -->
 								<div class="card align-items-center">
-									<!-- Card image -->
-									<div class="view overlay">
-										<img height="400" width="300" src="../<?=$linha['imagem']?>" class="card-img-top" alt="">
-										<a>
-											<div class="mask rgba-white-slight"></div>
-										</a>
-									</div>
-									<!-- Card image -->
-									<!-- Card content -->
-									<div class="card-body text-center">
-										<!-- Category & Title -->
-										<a href="" class="grey-text">
-											<h5><?=$linha['autor']?></h5>
-										</a>
-										<h5>
-											<strong>
-												<a href="" class="dark-grey-text">
-													<?=$linha['titulo']?>
-													<span class="badge badge-pill danger-color">NEW</span>
-												</a>
-											</strong>
-										</h5>
-										<p>Qtd: <?=$linha['qtd']?></p>
-										<h4 class="font-weight-bold blue-text">
-											<strong>R$<?=$linha['preco']?></strong>
-										</h4>
-									</div>
-									<!-- Card content -->
+								<!-- Card image -->
+								<div class="view overlay">
+									<form method="post" action="livro-detalhado.php">
+										<!--armazena o id do livro para mandar para a  pagina de detalhamento-->
+										<input type="hidden" name="id" value="<?=$linha['id']?>"/>
+										<input name="id" type="image" height="400" width="300" value="<?=$linha['id']?>" src="../<?=$linha['imagem']?>" class="card-img-top" alt=""/>
+									</form>
 								</div>
-								<!-- Card -->	
+								<!-- Card image -->
+								<!-- Card content -->
+								<div class="card-body text-center">
+									<!-- Category & Title -->
+									<a class="grey-text">
+										<h5><?=$linha['autor']?></h5>
+									</a>
+									<h5>
+										<strong>
+											<a class="dark-grey-text"><?=$linha['titulo']?>
+											<span class="badge badge-pill danger-color">NEW</span>
+										</strong>
+									</h5>
+									<p>Qtd: <?=$linha['qtd']?></p>
+									<h4 class="font-weight-bold blue-text">
+										<strong>R$<?=$linha['preco']?></strong>
+									</h4>
+									<form method="post" action="livro-detalhado.php">
+										<!--armazena o id do livro para mandar para a  pagina de detalhamento-->
+										<input type="hidden" name="id" value="<?=$linha['id']?>"/>
+										<button name="id" value="<?=$linha['id']?>" class="btn btn-success">Comprar</button>
+									</form>
+								</div>
+								<!-- Card content -->
 							</div>
-							<!-- Grid column -->
+							<!-- Card -->
+						</div>
+						<!-- Grid column -->
+						<!-- teste -->
 							<?php
 										// finaliza o loop que vai mostrar os dados
 										}while($linha = mysql_fetch_assoc($dados));
@@ -551,7 +564,7 @@ Autores: Felipe Gomes
 							require_once ("../conection/conexao.php");
 
 							// cria a instrução SQL que vai selecionar os dados
-							$sql = "SELECT  autor,  titulo, preco, imagem, qtd FROM LIVRO WHERE categoria='infantil' AND qtd!=0 ORDER BY id desc";
+							$sql = "SELECT id, autor,  titulo, preco, imagem, qtd FROM livro WHERE categoria='infantil' AND qtd!=0 ORDER BY id desc";
 							$dados = mysql_query($sql);
 							// transforma os dados em um array
 							$linha = mysql_fetch_assoc($dados);
@@ -563,42 +576,47 @@ Autores: Felipe Gomes
 									// inicia o loop que vai mostrar todos os dados
 									do {
 							?>
-							<!-- Grid column -->
+							<!-- teste -->
 							<div class="col-lg-3 col-md-6 mb-lg-0 mb-4" style="margin-top: 2%">
 								<!-- Card -->
 								<div class="card align-items-center">
-									<!-- Card image -->
-									<div class="view overlay">
-										<img height="400" width="300" src="../<?=$linha['imagem']?>" class="card-img-top" alt="">
-										<a>
-											<div class="mask rgba-white-slight"></div>
-										</a>
-									</div>
-									<!-- Card image -->
-									<!-- Card content -->
-									<div class="card-body text-center">
-										<!-- Category & Title -->
-										<a href="" class="grey-text">
-											<h5><?=$linha['autor']?></h5>
-										</a>
-										<h5>
-											<strong>
-												<a href="" class="dark-grey-text">
-													<?=$linha['titulo']?>
-													<span class="badge badge-pill danger-color">NEW</span>
-												</a>
-											</strong>
-										</h5>
-										<p>Qtd: <?=$linha['qtd']?></p>
-										<h4 class="font-weight-bold blue-text">
-											<strong>R$<?=$linha['preco']?></strong>
-										</h4>
-									</div>
-									<!-- Card content -->
+								<!-- Card image -->
+								<div class="view overlay">
+									<form method="post" action="livro-detalhado.php">
+										<!--armazena o id do livro para mandar para a  pagina de detalhamento-->
+										<input type="hidden" name="id" value="<?=$linha['id']?>"/>
+										<input name="id" type="image" height="400" width="300" value="<?=$linha['id']?>" src="../<?=$linha['imagem']?>" class="card-img-top" alt=""/>
+									</form>
 								</div>
-								<!-- Card -->	
+								<!-- Card image -->
+								<!-- Card content -->
+								<div class="card-body text-center">
+									<!-- Category & Title -->
+									<a class="grey-text">
+										<h5><?=$linha['autor']?></h5>
+									</a>
+									<h5>
+										<strong>
+											<a class="dark-grey-text"><?=$linha['titulo']?>
+											<span class="badge badge-pill danger-color">NEW</span>
+										</strong>
+									</h5>
+									<p>Qtd: <?=$linha['qtd']?></p>
+									<h4 class="font-weight-bold blue-text">
+										<strong>R$<?=$linha['preco']?></strong>
+									</h4>
+									<form method="post" action="livro-detalhado.php">
+										<!--armazena o id do livro para mandar para a  pagina de detalhamento-->
+										<input type="hidden" name="id" value="<?=$linha['id']?>"/>
+										<button name="id" value="<?=$linha['id']?>" class="btn btn-success">Comprar</button>
+									</form>
+								</div>
+								<!-- Card content -->
 							</div>
-							<!-- Grid column -->
+							<!-- Card -->
+						</div>
+						<!-- Grid column -->
+						<!-- teste -->
 							<?php
 										// finaliza o loop que vai mostrar os dados
 										}while($linha = mysql_fetch_assoc($dados));
@@ -624,56 +642,68 @@ Autores: Felipe Gomes
                         <div class="row">
                             <?php
 							require_once ("../conection/conexao.php");
-
+							
 							// cria a instrução SQL que vai selecionar os dados
-							$sql = "SELECT  autor,  titulo, preco, imagem, qtd FROM LIVRO WHERE categoria='geral' AND qtd!=0 ORDER BY id desc";
+							$sql = "SELECT id, autor,  titulo, preco, imagem, qtd FROM livro WHERE categoria='geral' AND qtd!=0 ORDER BY id desc";
 							$dados = mysql_query($sql);
 							// transforma os dados em um array
 							$linha = mysql_fetch_assoc($dados);
 							// calcula quantos dados retornaram
 							$total = mysql_num_rows($dados);
 							$conta = 1;
+							
+							
+							$_SESSION['imagem']=$linha['imagem'];
+							$_SESSION['autor']=$linha['autor'];
+							$_SESSION['titulo']=$linha['titulo'];
+							$_SESSION['preco']=$linha['preco'];
+							$_SESSION['qtd']=$linha['qtd'];
 								// se o número de resultados for maior que zero, mostra os dados
 								if($total > 0) {
 									// inicia o loop que vai mostrar todos os dados
 									do {
 							?>
-							<!-- Grid column -->
+							<!-- teste -->
 							<div class="col-lg-3 col-md-6 mb-lg-0 mb-4" style="margin-top: 2%">
 								<!-- Card -->
 								<div class="card align-items-center">
-									<!-- Card image -->
-									<div class="view overlay">
-										<img height="400" width="300" src="../<?=$linha['imagem']?>" class="card-img-top" alt="">
-										<a>
-											<div class="mask rgba-white-slight"></div>
-										</a>
-									</div>
-									<!-- Card image -->
-									<!-- Card content -->
-									<div class="card-body text-center">
-										<!-- Category & Title -->
-										<a href="" class="grey-text">
-											<h5><?=$linha['autor']?></h5>
-										</a>
-										<h5>
-											<strong>
-												<a href="" class="dark-grey-text">
-													<?=$linha['titulo']?>
-													<span class="badge badge-pill danger-color">NEW</span>
-												</a>
-											</strong>
-										</h5>
-										<p>Qtd: <?=$linha['qtd']?></p>
-										<h4 class="font-weight-bold blue-text">
-											<strong>R$<?=$linha['preco']?></strong>
-										</h4>
-									</div>
-									<!-- Card content -->
+								<!-- Card image -->
+								<div class="view overlay">
+									<form method="post" action="livro-detalhado.php">
+										<!--armazena o id do livro para mandar para a  pagina de detalhamento-->
+										<input type="hidden" name="id" value="<?=$linha['id']?>"/>
+										<input name="id" type="image" height="400" width="300" value="<?=$linha['id']?>" src="../<?=$linha['imagem']?>" class="card-img-top" alt=""/>
+									</form>
 								</div>
-								<!-- Card -->	
+								<!-- Card image -->
+								<!-- Card content -->
+								<div class="card-body text-center">
+									<!-- Category & Title -->
+									<a class="grey-text">
+										<h5><?=$linha['autor']?></h5>
+									</a>
+									<h5>
+										<strong>
+											<a class="dark-grey-text"><?=$linha['titulo']?>
+											<span class="badge badge-pill danger-color">NEW</span>
+										</strong>
+									</h5>
+									<p>Qtd: <?=$linha['qtd']?></p>
+									<h4 class="font-weight-bold blue-text">
+										<strong>R$<?=$linha['preco']?></strong>
+									</h4>
+									<form method="post" action="livro-detalhado.php">
+										<!--armazena o id do livro para mandar para a  pagina de detalhamento-->
+										<input type="hidden" name="id" value="<?=$linha['id']?>"/>
+										<button name="id" value="<?=$linha['id']?>" class="btn btn-success">Comprar</button>
+									</form>
+								</div>
+								<!-- Card content -->
 							</div>
-							<!-- Grid column -->
+							<!-- Card -->
+						</div>
+						<!-- Grid column -->
+						<!-- teste -->
 							<?php
 										// finaliza o loop que vai mostrar os dados
 										}while($linha = mysql_fetch_assoc($dados));

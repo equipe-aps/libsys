@@ -12,7 +12,7 @@ require_once ("conection/conexao.php");
 
 $nome = $_POST["nome"];
 $idade = $_POST["idade"];
-$email = $_POST["email"];
+$email = $_POST["user"];
 $senha = $_POST["senha"];
 $erro = 0;
 

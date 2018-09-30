@@ -3,12 +3,13 @@
 session_start();
 
 // as variáveis email e senha recebem os dados digitados na página anterior
-$user = $_POST['user'];
-$password = $_POST['password'];
+$user = $_POST["user"];
+$password = $_POST["password"];
 //coneção com o banco de dados
-$conn = mysqli_connect("localhost","root","","server");
+$conn = mysql_connect("mysql.hostinger.com.br", "u923371810_admin", "retiroartes");
+$db = mysql_select_db("u923371810_grupo", $conn);
 $sql = "SELECT * FROM usuario WHERE email = '$user' AND senha = '$password'";
-$result = mysqli_query($conn, $sql);
+$result = mysql_query($conn, $sql);
 // A variavel $result pega as varias $email e $senha, faz uma 
 //pesquisa na tabela de usuarios
 // $result = mysqli_query($sql);
@@ -21,7 +22,7 @@ do formulário inicial para que se possa tentar novamente realizar o email */
 require_once ("conection/conexao.php");
 
 // cria a instrução SQL que vai selecionar os dados
-$sql2 = "SELECT id, nome, idade FROM  usuario WHERE email = '$user'";
+$sql2 = "SELECT id, nome, idade FROM  usuario WHERE email = '$user' AND senha = '$password'";
 $dados = mysql_query($sql2);
 // transforma os dados em um array
 $linha = mysql_fetch_assoc($dados);
@@ -38,8 +39,9 @@ $idade = $linha['idade'];
 }while($linha = mysql_fetch_assoc($dados));
 // fim do if
 }
-if(mysqli_num_rows ($result) > 0 )
+if(mysql_num_rows ($dados) > 0 )
 {
+echo "entrou";
 $_SESSION['id'] = $id;
 $_SESSION['nome'] = $nome;
 $_SESSION['idade'] = $idade;
@@ -52,5 +54,5 @@ else{
   unset ($_SESSION['password']);
   header('location:index.html');
 }
-mysqli_close($conn);
+mysql_close($conn);
 ?>

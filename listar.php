@@ -8,7 +8,7 @@
 	<body>
 	
 <?php
-
+header("Content-Type: text/html; charset=ISO-8859-1",true);
 require_once ("conection/conexao.php");
 
 // cria a instrução SQL que vai selecionar os dados

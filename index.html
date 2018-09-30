@@ -110,8 +110,8 @@ Autores: Felipe Gomes
 
 					<div class="modal-footer display-footer">
 						<div class="options text-center text-md-right mt-1">
-							<p>Not a member? <a href="#" data-toggle="modal" data-target="#cadastro" class="blue-text">Sign Up</a></p>
-							<p>Forgot <a href="#" class="blue-text">Password?</a></p>
+							<p>Not a member? <a href="#" data-toggle="modal" data-dismiss="modal" data-target="#cadastro" class="blue-text">Sign Up</a></p>
+							<p>Forgot <a href="#" data-toggle="modal" data-dismiss="modal" data-target="#esqueceu-senha" class="blue-text">Password?</a></p>
 						</div>
 						<button type="button" class="btn btn-outline-primary waves-effects ml-auto" data-dismiss="modal">Close</button>
 					</div>
@@ -120,7 +120,7 @@ Autores: Felipe Gomes
 		</div>
 		<!-- Modal popup login -->
 		<!-- Modal popup cadastro -->
-		
+
 		<!---->
 		<div class="modal fade" id="cadastro" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 			<div class="modal-dialog modal-dialog-centered" role="document">
@@ -137,25 +137,25 @@ Autores: Felipe Gomes
 							<div class="md-form form-sm">
 								<i class="fa fa-user prefix"></i>
 								<input type="text" id="nome" class="form-control form-control-sm validate" name="nome">
-								<label for="user">Nome</label>
+								<label for="nome">Nome</label>
 							</div>
 							<!-- email -->
 							<div class="md-form form-sm">
 								<i class="fa fa-envelope prefix"></i>
-								<input type="email" id="email" class="form-control form-control-sm validate" name="email">
+								<input type="email" id="user" class="form-control form-control-sm validate" name="user">
 								<label for="user">Email</label>
 							</div>
 							<!-- idade -->
 							<div class="md-form form-sm">
 								<i class="fa fa-calendar prefix"></i>
 								<input type="text" id="idade" class="form-control form-control-sm validate" name="idade">
-								<label for="user">Idade</label>
+								<label for="idade">Idade</label>
 							</div>
 							<!-- senha -->
 							<div class="md-form form-sm">
 								<i class="fa fa-lock prefix"></i>
 								<input type="password" id="senha" class="form-control form-control-sm validate" name="senha">
-								<label for="user">Senha</label>
+								<label for="password">Senha</label>
 							</div>
 
 						</div>
@@ -168,6 +168,51 @@ Autores: Felipe Gomes
 			</div>
 		</div>
 		<!-- Modal popup cadastro -->
+
+        <!-- Modal password forget -->
+        <div class="modal fade" id="esqueceu-senha" name="esqueceu-senha" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Inscreva-se</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form method="post" action="forger-password.php" id="formcad" name="formcad">
+                        <div class="modal-body">
+                            <!-- email -->
+                            <div class="md-form form-sm">
+                                <i class="fa fa-envelope prefix"></i>
+                                <input type="email" id="user" class="form-control form-control-sm validate" name="user">
+                                <label for="user">Email</label>
+                            </div>
+
+                            <!-- senha -->
+                            <div class="md-form form-sm">
+                                <i class="fa fa-unlock-alt prefix"></i>
+                                <input type="password" id="senha" class="form-control form-control-sm validate" name="senha">
+                                <label for="password">Password</label>
+                            </div>
+
+                            <!-- confirmar senha -->
+                            <div class="md-form form-sm">
+                                <i class="fa fa-lock prefix"></i>
+                                <input type="password" id="conf-senha" class="form-control form-control-sm validate" name="conf-senha">
+                                <label for="password">Confirm Password</label>
+                            </div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <input type="button" class="btn btn-secondary" data-dismiss="modal" value="Sair" />
+                            <input type="submit" class="btn btn-primary" value="Inscrever-se" />
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- Modal password forget -->
+
 		<!--Mask-->
 		<div id="intro" class="view">
 			<div class="container-fluid full-bg-img img-fluid d-block d-flex align-items-center justify-content-center">
@@ -189,7 +234,7 @@ Autores: Felipe Gomes
 		<!--Mask-->
 	</header>
     <!--Main Navigation-->
-    
+
 	<!--Main Layout-->
     <main>
         <div class="row justify-content-center d-flex justify-content-center" >
