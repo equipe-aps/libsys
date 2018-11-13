@@ -30,7 +30,7 @@ $image = $_POST["image"];
 $erro = 0;
 
 /*if ((int)$idade < 16){
-	header('location:index2.html');
+	header('location:index2.php');
 	$erro = 1;
 }*/
 
@@ -39,8 +39,8 @@ if ($erro == 0) {
 	$sql = "INSERT INTO livro (id_vendedor, titulo, autor, preco, descricao, categoria, imagem, qtd) VALUES ('$id', '$titulo', '$autor', '$preco', '$descricao', '$categoria', '$destino', '$qtd')";
 	$result = mysql_query($sql);
 	if (!$result) {
-		//header('location:index2.html');
-		die("Não foi possível  conectar ao Banco de Dados: " . mysql_error());
+		//header('location:index2.php');
+		die("NÃ£o foi possÃ­vel  conectar ao Banco de Dados: " . mysql_error());
 	} else{
 		header('location:pages/user-page.php');
 	}

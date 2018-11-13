@@ -15,7 +15,7 @@
 							
 		require_once ("../conection/conexao.php");
 		// cria a instrução SQL que vai selecionar os dados
-		$busca="SELECT autor, titulo, preco, imagem, qtd FROM livro WHERE titulo LIKE '%$buscas%' ORDER BY id desc";
+		$busca="SELECT autor, titulo, preco, imagem, qtd FROM livro WHERE titulo LIKE '%$buscas%' AND qtd >= 1 ORDER BY id desc";
 		$dados = mysql_query($busca);
 		// transforma os dados em um array
 		$linha = mysql_fetch_assoc($dados);
@@ -49,6 +49,7 @@
 					<strong>
 						<a href="" class="dark-grey-text"><?=$linha['titulo']?>
 							<span class="badge badge-pill danger-color">NEW</span>
+                        </a>
 					</strong>
 				</h5>
 				<p>Qtd: <?=$linha['qtd']?></p>

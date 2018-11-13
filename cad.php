@@ -17,7 +17,7 @@ $senha = $_POST["senha"];
 $erro = 0;
 
 if ((int)$idade < 16){
-	header('location:index2.html');
+	header('location:index2.php');
 	$erro = 1;
 }
 
@@ -26,9 +26,9 @@ if ($erro == 0) {
 	$sql = "INSERT INTO usuario (nome, idade, email, senha) VALUES ('$nome', '$idade', '$email', '$senha')";
 	$result = mysql_query($sql);
 	if (!$sql) {
-		header('location:index2.html');
+		header('location:index2.php');
 	} else{
-		header('location:index.html');
+		header('location:index.php');
 	}
 }
 ?>

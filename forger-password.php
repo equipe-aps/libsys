@@ -25,7 +25,7 @@ $erro = 0;
 
 if ($senha != $confsenha){
     echo "<script>alert('asdasdas');</script>"; //use double quotes for js inside php!
-    header('location:index.html');
+    header('location:index.php');
 
     $erro = 1;
 }
@@ -34,7 +34,7 @@ if ($erro == 0) {
 
     $sql = "UPDATE usuario  SET senha='$senha' WHERE email='$email'";
     $result = mysql_query($sql);
-    header('location:index.html');
+    header('location:index.php');
 }
 ?>
 </body>

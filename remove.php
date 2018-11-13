@@ -23,12 +23,12 @@ $result_sql_zerar = mysql_query($zerar);
 
 require_once ("conection/conexao.php");
 $id = $_SESSION['id'];
-// cria a instrução SQL que vai selecionar os dados
+// cria a instruÃ§Ã£o SQL que vai selecionar os dados
 $sql = "DELETE FROM usuario WHERE id=$id";
 $dados = mysql_query($sql);
 
 if($dados){
-	header('location:index.html');
+	header('location:index.php');
 }else{
 	header('location:user-page.php');
 }

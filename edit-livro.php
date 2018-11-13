@@ -33,26 +33,39 @@ session_start();
 
 require_once ("conection/conexao.php");
 
-$id = $_SESSION["id"];
-$nome = $_POST["nome"];
-$idade = $_POST["idade"];
-$email = $_POST["user"];
-$senha = $_POST["password"];
+$id = $_POST["id"];
+$titulo = $_POST["titulo"];
+$autor = $_POST["autor"];
+$qtd = $_POST["qtd"];
+$preco = $_POST["preco"];
+$descricao = $_POST["descricao"];
+$categoria = $POST["categoria"];
+
+if($_FILES['image']['name']==""){
+    $imagem = $_POST["imagem-text"];
+}else{
+    $arquivo = $_FILES['image']['name'];
+    $imagem = "images/".$arquivo;
+    echo $arquivo;
+
+    move_uploaded_file($_FILES['image']['tmp_name'],$imagem);
+}
 
 $erro = 0;
 
-if ((int)$idade < 16){
-	header('location:index2.php');
-	$erro = 1;
-}
-
 if ($erro == 0) {
 
-	$sql = "UPDATE usuario  SET nome='$nome', idade='$idade', email='$email', senha='$senha' WHERE id=$id";
-	$result = mysql_query($sql);
-	if ($result) {
-	    
-	    ?>
+	$busca="UPDATE livro SET autor='$autor', titulo='$titulo', preco=$preco, imagem='$imagem', qtd=$qtd, descricao='$descricao' WHERE id=$id";
+    $dados = mysql_query($busca);
+    // transforma os dados em um array
+    //$linha = mysql_fetch_assoc($dados);
+	if (!$dados) {
+        
+        echo "Erro";
+
+	} else{
+        
+        ?>
 	    <script>
         $(function() {
         $("#ModalSuccess").modal();//chama o modal de compra bem sucedida 
@@ -77,23 +90,20 @@ if ($erro == 0) {
               <div class="modal-body">
                 <div class="text-center">
                   <i class="fa fa-check fa-4x mb-3 animated rotateIn"></i>
-                  <p>Sua conta foi editada com Sucesso!</p>
+                  <p>Seu livro foi editado com Sucesso!</p>
                 </div>
               </div>
     
               <!--Footer-->
               <div class="modal-footer justify-content-center">
-                <button type="button" class="btn btn-primary" onclick="window.location.href='pages/user-page.php'">OK!</button>
+                <button type="button" class="btn btn-primary" onclick="window.location.href='pages/cadastrados-page.php'">OK!</button>
               </div>
             </div>
             <!--/.Content-->
           </div>
         </div>
         <?php
-	    
-		//header('location:user-page.php');
-	} else{
-		header('location:index.php');
+        //header('location:pages/cadastrados-page.php');
 	}
 }
 ?>
@@ -107,5 +117,4 @@ if ($erro == 0) {
         <!-- MDB core JavaScript -->
         <script type="text/javascript" src="../js/mdb.min.js"></script>
 </body>
-
 </html>

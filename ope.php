@@ -52,7 +52,7 @@ header('location:pages/user-page.php');
 else{
   unset ($_SESSION['user']);
   unset ($_SESSION['password']);
-  header('location:index.html');
+  header('location:index.php');
 }
 mysql_close($conn);
 ?>
