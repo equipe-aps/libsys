@@ -16,7 +16,7 @@ Autores: Felipe Gomes
             unset($_SESSION['password']);
             header('location:index.php');
             }
-            $_SESSION['id'];
+            
             $nome = $_SESSION['nome'];
             $email = $_SESSION['user'];
             $idade = $_SESSION['idade'];
@@ -53,6 +53,7 @@ Autores: Felipe Gomes
     <!-- Link Drive Folder Images https://drive.google.com/drive/u/0/folders/15rtNhjuVU4cFGFKyF55ZQrQbvDlT2n8i -->
     <!-- Icon -->
     <link rel="shortcut icon"  href="../favicon.ico">
+</head>
 
 <body>
     <?php
@@ -62,7 +63,7 @@ Autores: Felipe Gomes
     $sql="SELECT id, id_vendedor, autor, descricao, titulo, preco, imagem, qtd FROM livro WHERE id=$id ORDER BY id desc";
     $dados = mysql_query($sql);
     $linha = mysql_fetch_assoc($dados);
-    $_SESSION['id_vendedor'] = $linha['id_vendedor'];
+
     ?>
 
 
@@ -90,7 +91,7 @@ Autores: Felipe Gomes
                             <div class="dropdown-menu">
                                 <a class="dropdown-item" data-toggle="modal" data-target="#cadastrar-livro">Cadastrar Livros</a>
                                 <a class="dropdown-item" href="cadastrados-page.php">Livros Cadastrados</a>
-                                
+                                <a class="dropdown-item" data-toggle="modal" data-target="#editar-livro">Editar Livro</a>
                             </div>
                         </li>
 
@@ -101,72 +102,72 @@ Autores: Felipe Gomes
                             <a href="#" class="nav-link">Livros Vendidos</a>
                         </li>
                     </ul>
-
+                    
                     <!-- SINO DE NOTIFICACAO -->
-                        <?php
-                        require_once("../conection/conexao.php");
-                        $sql1 = "SELECT livros_comprados.*, livro.* FROM livros_comprados JOIN livro ON livros_comprados.id_vendedor = $id_usuario AND livros_comprados.status = 'solicitado' AND livro.id = livros_comprados.id_livro";
-                        $dados1 = mysql_query($sql1);
-                        // transforma os dados em um array
-                        $linha1 = mysql_fetch_assoc($dados1);
-                        // calcula quantos dados retornaram
-                        $total = mysql_num_rows($dados1);
-                        $count = 0;
-                        ?>
-                        <div class="dropdown" style="float: right; padding: 13px">
-                            <a href="#" onclick="return false;" role="button" data-toggle="dropdown" id="dropdownMenu1" data-target="#" style="float: left" aria-expanded="true">
-                                <i class="fa fa-bell-o" style="font-size: 20px; float: left; color: white">
-                                </i>
-                            </a>
-                            
-                            <ul class="dropdown-menu dropdown-menu-left pull-right" role="menu" aria-labelledby="dropdownMenu1">
-                                <li role="presentation">
-                                    <a href="#" class="dropdown-menu-header">Novos Pedidos</a>
-                                    <?php $id_usuario ?>
-                                </li>
-                                <ul class="timeline timeline-icons timeline-sm" style="margin:10px;width:210px">
-                                    
-                                    <?php
-                                    if($total > 0){
-                                        do{
-                                        ?>
-                                        <li>
-                                            <p>
-                                                <span class="timeline-icon"><i class="fa fa-book" style="color:#42a5f5"></i></span>
-                                                <a href="vendidos-page.php" class="grey-text"><?=$linha1['titulo']?></a>
-                                                <span class="timeline-date"><?=$linha1['data_compra']?></span>
-                                            </p>
-                                        </li>
-                                        <?php
-                                        //incrementa contador de notificacoes
-                                        $count++;
-                                        }while($linha1 = mysql_fetch_assoc($dados1));
-                                    }else{
-                                    ?>
-                                        <li>
-                                            <p>
-                                                <span class="timeline-icon"><i class="fa fa-check" style="color:#00C851"></i></span>
-                                                Nenhuma notificação
-                                            </p>
-                                        </li>
-                                    <?php
-                                    }
-                                    ?>
-                                </ul>
+                    <?php
+                    require_once("../conection/conexao.php");
+                    $sql1 = "SELECT livros_comprados.*, livro.* FROM livros_comprados JOIN livro ON livros_comprados.id_vendedor = $id_usuario AND livros_comprados.status = 'solicitado' AND livro.id = livros_comprados.id_livro";
+                    $dados1 = mysql_query($sql1);
+                    // transforma os dados em um array
+                    $linha1 = mysql_fetch_assoc($dados1);
+                    // calcula quantos dados retornaram
+                    $total = mysql_num_rows($dados1);
+                    $count = 0;
+                    ?>
+                    <div class="dropdown" style="float: right; padding: 13px">
+                        <a href="#" onclick="return false;" role="button" data-toggle="dropdown" id="dropdownMenu1" data-target="#" style="float: left" aria-expanded="true">
+                            <i class="fa fa-bell-o" style="font-size: 20px; float: left; color: white">
+                            </i>
+                        </a>
+                        
+                        <ul class="dropdown-menu dropdown-menu-left pull-right" role="menu" aria-labelledby="dropdownMenu1">
+                            <li role="presentation">
+                                <a href="#" class="dropdown-menu-header">Novos Pedidos</a>
+                                <?php $id_usuario ?>
+                            </li>
+                            <ul class="timeline timeline-icons timeline-sm" style="margin:10px;width:210px">
                                 
+                                <?php
+                                if($total > 0){
+                                    do{
+                                    ?>
+                                    <li>
+                                        <p>
+                                            <span class="timeline-icon"><i class="fa fa-book" style="color:#42a5f5"></i></span>
+                                            <a href="vendidos-page.php" class="grey-text"><?=$linha1['titulo']?></a>
+                                            <span class="timeline-date"><?=$linha1['data_compra']?></span>
+                                        </p>
+                                    </li>
+                                    <?php
+                                    //incrementa contador de notificacoes
+                                    $count++;
+                                    }while($linha1 = mysql_fetch_assoc($dados1));
+                                }else{
+                                ?>
+                                    <li>
+                                        <p>
+                                            <span class="timeline-icon"><i class="fa fa-check" style="color:#00C851"></i></span>
+                                            Nenhuma notificação
+                                        </p>
+                                    </li>
+                                <?php
+                                }
+                                ?>
                             </ul>
                             
-                            <?php
-                            if($count > 0){
-                            ?>
-                                <!-- contador de notificacoes -->
-                                <span class="badge badge-notify badge-danger"><?=$count?></span>
-                            <?php
-                            }
-                            ?>
-                        </div>
-                        <!-- SINO DE NOTIFICACAO -->
-
+                        </ul>
+                        
+                        <?php
+                        if($count > 0){
+                        ?>
+                            <!-- contador de notificacoes -->
+                            <span class="badge badge-notify badge-danger"><?=$count?></span>
+                        <?php
+                        }
+                        ?>
+                    </div>
+                    <!-- SINO DE NOTIFICACAO -->
+                    
                     <ul class="navbar-nav">
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="navdrop">Olá,
@@ -175,7 +176,7 @@ Autores: Felipe Gomes
                             </a>
                             <div class="dropdown-menu">
                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#editar-cadastro">Editar Cadastro</a>
-                                <a class="dropdown-item" href="../index.php">Sair</a>
+                                <a class="dropdown-item" href="../index.html">Sair</a>
                             </div>
 
                         </li>
@@ -417,7 +418,7 @@ Autores: Felipe Gomes
                       <!--Slides-->
                       <div class="carousel-inner" role="listbox">
                         <div class="carousel-item active">
-                          <img class="d-block w-100" src="../<?=$linha['imagem']?>"
+                          <img class="d-block w-100" src="../<?=$_COOKIE['imagem']?>"
                             alt="First slide">
                         </div>
                       </div>
@@ -437,15 +438,15 @@ Autores: Felipe Gomes
                   </div>
                   <div class="col-lg-7">
                     <h2 class="h2-responsive product-name">
-                      <strong><?=$linha['titulo']?></strong>
+                      <strong><?=$_COOKIE['titulo']?></strong>
                     </h2>
                     <h4 class="h4-responsive">
                       <span class="green-text">
-                        <strong>R$ <?=$linha['preco']?></strong>
+                        <strong>R$ <?=$_COOKIE['preco']?></strong>
                       </span>
                       <span class="grey-text">
                         <small>
-                          <s>R$ <?=$linha['preco']+20?></s>
+                          <s>R$ <?=$_COOKIE['preco']+20?></s>
                         </small>
                       </span>
                     </h4>
@@ -469,14 +470,61 @@ Autores: Felipe Gomes
                         <div id="collapseOne" class="collapse show" role="tabpanel" aria-labelledby="headingOne"
                           data-parent="#accordion">
                           <div class="card-body">
-                            <?=$linha['descricao']?>
+                            <?=$_COOKIE['descricao']?>
                           </div>
                         </div>
                       </div>
                       <!-- Accordion card -->
 
-                      
-                    </div>
+                      <!-- Accordion card -->
+                    <!--  <div class="card">-->
+
+                        <!-- Card header -->
+                    <!--    <div class="card-header" role="tab" id="headingTwo">-->
+                    <!--      <a class="collapsed" data-toggle="collapse" href="#collapseTwo" aria-expanded="false"-->
+                    <!--        aria-controls="collapseTwo">-->
+                    <!--        <h5 class="mb-0">-->
+                    <!--          Details <i class="fa fa-angle-down rotate-icon"></i>-->
+                    <!--        </h5>-->
+                    <!--      </a>-->
+                    <!--    </div>-->
+
+                        <!-- Card body -->
+                    <!--    <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo" data-parent="#accordion">-->
+                    <!--      <div class="card-body">-->
+                    <!--        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad-->
+                    <!--        squid. 3 wolf moon officia aute,-->
+                    <!--        non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod.-->
+                    <!--      </div>-->
+                    <!--    </div>-->
+                    <!--  </div>-->
+                      <!-- Accordion card -->
+
+                      <!-- Accordion card -->
+                    <!--  <div class="card">-->
+
+                        <!-- Card header -->
+                    <!--    <div class="card-header" role="tab" id="headingThree">-->
+                    <!--      <a class="collapsed" data-toggle="collapse" href="#collapseThree" aria-expanded="false"-->
+                    <!--        aria-controls="collapseThree">-->
+                    <!--        <h5 class="mb-0">-->
+                    <!--          Shipping <i class="fa fa-angle-down rotate-icon"></i>-->
+                    <!--        </h5>-->
+                    <!--      </a>-->
+                    <!--    </div>-->
+
+                        <!-- Card body -->
+                    <!--    <div id="collapseThree" class="collapse" role="tabpanel" aria-labelledby="headingThree"-->
+                    <!--      data-parent="#accordion">-->
+                    <!--      <div class="card-body">-->
+                    <!--        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad-->
+                    <!--        squid. 3 wolf moon officia aute,-->
+                    <!--        non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod.-->
+                    <!--      </div>-->
+                    <!--    </div>-->
+                    <!--  </div>-->
+                      <!-- Accordion card -->
+                    <!--</div>-->
                     <!--/.Accordion wrapper-->
 
                     <!-- Add to Cart -->
@@ -498,12 +546,9 @@ Autores: Felipe Gomes
                       </div>
 
                       <div class="text-center">
-                          <!-- criacao de cookies-->
 
-
-                          <!-- criacao de cookies-->
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Sair</button>
-                        <input type="hidden" id="comprar" name="comprar" value="<?=$linha['id']?>">
+                        <input type="hidden" id="comprar" name="comprar" value="<?=$_COOKIE['id']?>">
                         <button type="submit" class="btn btn-primary">Comprar
                           <i class="fa fa-shopping-cart ml-2" aria-hidden="true"></i>
                         </button>
@@ -527,62 +572,36 @@ Autores: Felipe Gomes
         <section class="row" style="margin: 150px; margin-top:-10%; ;">
             <div id="area-livro" class="col row" style="margin:10px; ;">
                 <div id="imagem-livro" class="col" style="margin: 10px; padding:10px; ;">
-                    <img src="../<?=$linha['imagem']?>" height="350" width="250" style="border:1px solid black" alt="<?=$linha['titulo']?>">
+                    <img src="../<?=$_COOKIE['imagem']?>" height="350" width="250" style="border:1px solid black" alt="<?=$_COOKIE['titulo']?>">
 
                 </div>
                 <!--conteudo da descricao do livro-->
                 <div id="informacao" class="col" style="margin: 10px; padding-top:40px; ;">
 
-                    <h4 class="font-weight-bold mb-3"><?=$linha['titulo']?></h4>
+                    <h4 class="font-weight-bold mb-3"><?=$_COOKIE['titulo']?></h4>
                     <!--autor com tab-->
-                    <h6 class="font-weight-bold grey-text mb-3" style="padding-left:2em ">Autor: <?=$linha['autor']?></h6>
+                    <h6 class="font-weight-bold grey-text mb-3" style="padding-left:2em ">Autor: <?=$_COOKIE['autor']?></h6>
                     <hr class="grey"/>
-                    <h6 class="font-weight-bold mb-3">Quantidade Disponível: <?=$linha['qtd']?></h6>
-                    <h4 class="h3-responsive font-weight-bold mb-3">PREÇO: R$<?=$linha['preco']?></h4>
-                    
-                    <?php
-                    if($linha['qtd'] != 0){
-                    ?>
+                    <h6 class="font-weight-bold mb-3">Quantidade Disponível: <?=$_COOKIE['qtd']?></h6>
+                    <h4 class="h3-responsive font-weight-bold mb-3">PREÇO: R$<?=$_COOKIE['preco']?></h4>
                     <div class="row justify-content-md-center center-block">
 
                         <form method="post" action="#" name="formcomprar" id="formcomprar">
                             <!--armazena o id do livro para mandar para a  pagina de detalhamento-->
-                            <input type="hidden" name="id" value="<?=$linha['id']?>"/>
-                            <button type="button" name="id" value="<?=$linha['id']?>" class="btn btn-success waves-effect"
+                            <input type="hidden" name="id" value="<?=$_COOKIE['id']?>"/>
+                            <button type="button" name="id" value="<?=$_COOKIE['id']?>" class="btn btn-success waves-effect"
                                     data-toggle="modal" data-target="#modalComprarLivro">
                                 <i class="fa fa-shopping-cart" style="margin-right:10px;"></i>Comprar</button>
                         </form>
                         <!--<form method="post" action="#" name="formcomprar" id="formcomprar">-->
                             <!--armazena o id do livro para mandar para a  pagina de detalhamento-->
-                        <!--    <input type="hidden" name="id" value="<?=$linha['id']?>"/>-->
-                        <!--    <button name="id" value="<?=$linha['id']?>" class="btn btn-outline-success waves-effect">-->
+                        <!--    <input type="hidden" name="id" value="<?=$_COOKIE['id']?>"/>-->
+                        <!--    <button name="id" value="<?=$_COOKIE['id']?>" class="btn btn-outline-success waves-effect">-->
                         <!--        <i class="fa fa-shopping-cart" style="margin-right:10px;"></i>Adicionar ao carrinho-->
                         <!--    </button>-->
                         <!--</form>-->
                     </div>
-                    <?php
-                    }else{
-                    ?>
-                    <div class="row justify-content-md-center center-block">
 
-                        <form method="post" action="#" name="formcomprar" id="formcomprar">
-                            <!--armazena o id do livro para mandar para a  pagina de detalhamento-->
-                            <input type="hidden" name="id" value="<?=$linha['id']?>"/>
-                            <button type="button" name="id" value="<?=$linha['id']?>" class="btn btn-success waves-effect" disabled
-                                    data-toggle="modal" data-target="#modalComprarLivro">
-                                <i class="fa fa-shopping-cart" style="margin-right:10px;"></i>Comprar</button>
-                        </form>
-                        <!--<form method="post" action="#" name="formcomprar" id="formcomprar">-->
-                            <!--armazena o id do livro para mandar para a  pagina de detalhamento-->
-                        <!--    <input type="hidden" name="id" value="<?=$linha['id']?>"/>-->
-                        <!--    <button name="id" value="<?=$linha['id']?>" class="btn btn-outline-success waves-effect" disabled>-->
-                        <!--        <i class="fa fa-shopping-cart" style="margin-right:10px;"></i>Adicionar ao carrinho-->
-                        <!--    </button>-->
-                        <!--</form>-->
-                    </div>
-                    <?php  
-                    }
-                    ?>
                 </div>
                 <div id="descricao" class="row container" style="margin: 10px; padding-top:0px; border-radius: 10px; border: 1px solid #2E2E2E;">
                     <div id="descricao-title" class="col" style="margin: 10px; margin-bottom:0px; padding-top:0px;;">
@@ -591,7 +610,7 @@ Autores: Felipe Gomes
                     <div class="w-100"></div>
                     <div id="descricao=text" class="col" style="margin: 10px; padding-top:-10px;;">
                         <p style="overflow: auto; word-wrap:break-word; white-space: -moz-pre-wrap; white-space: pre-warp;">
-                            <?=$linha['descricao']?>
+                            <?=$_COOKIE['descricao']?>
                         </p>
                     </div>
 
@@ -620,26 +639,28 @@ Autores: Felipe Gomes
                             <div class="mx-4">
                                 <!--consulta informacao vendedor-->
                                 <?php
-                                require_once ("../conection/conexao.php");
-                                $id_vendedor = $_SESSION['id_vendedor'];
-                                $sql="SELECT nome, email, AVG(avaliacao) as media FROM usuario JOIN livro JOIN avaliacao ON $id_vendedor = usuario.id AND avaliacao.id_vendedor = $id_vendedor";
-                                $dados = mysql_query($sql);
-                                $linha = mysql_fetch_assoc($dados);
-
+//                                require_once ("../conection/conexao.php");
+//                                $id_vendedor = $_SESSION['id_vendedor'];
+//                                $sql="SELECT nome, email FROM usuario JOIN livro ON $id_vendedor = usuario.id";
+//                                $dados = mysql_query($sql);
+//                                $linha = mysql_fetch_assoc($dados);
+//
                                 ?>
 
-                                <h4 class="font-weight-bold mb-0" style="margin-top:10px;"><?=$linha['nome']?></h4>
+
+                                <h4 class="font-weight-bold mb-0" style="margin-top:10px;"><?=$_COOKIE['nome_vendedor']?></h4>
                                 <div class="orange-text">
                                     <?php
-                                    for ($i = 0; $i < $linha['media']; $i++) {
+                                    for ($i = 0; $i < $_COOKIE['media_vendedor']; $i++) {
                                         ?>
                                         <i class="fa fa-star"> </i>
                                         <?php
                                     }
+
                                     ?>
                                     <!--<i class="fa fa-star-half-full"> </i>-->
                                 </div>
-                                <h6 class="font-weight-bold grey-text mb-3"><?=$linha['email']?></h6>
+                                <h6 class="font-weight-bold grey-text mb-3"><?=$_COOKIE['email_vendedor']?></h6>
                                 <p class="grey-text"></p>
 
                             </div>

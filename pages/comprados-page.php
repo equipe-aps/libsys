@@ -40,6 +40,7 @@ Autores: Felipe Gomes
 		<?php header("Content-Type: text/html; charset=utf-8",true);?>
 		<!-- Font Awesome -->
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 		<!-- Bootstrap core CSS -->
 		<link href="../css/bootstrap.min.css" rel="stylesheet">
 		<!-- Material Design Bootstrap -->
@@ -102,58 +103,60 @@ Autores: Felipe Gomes
                         $total = mysql_num_rows($dados1);
                         $count = 0;
                         ?>
-                        <div class="dropdown" style="float: right; padding: 13px">
-                            <a href="#" onclick="return false;" role="button" data-toggle="dropdown" id="dropdownMenu1" data-target="#" style="float: left" aria-expanded="true">
-                                <i class="fa fa-bell-o" style="font-size: 20px; float: left; color: white">
-                                </i>
-                            </a>
-                            
-                            <ul class="dropdown-menu dropdown-menu-left pull-right" role="menu" aria-labelledby="dropdownMenu1">
-                                <li role="presentation">
-                                    <a href="#" class="dropdown-menu-header">Novos Pedidos</a>
-                                    <?php $id_usuario ?>
-                                </li>
-                                <ul class="timeline timeline-icons timeline-sm" style="margin:10px;width:210px">
-                                    
-                                    <?php
-                                    if($total > 0){
-                                        do{
-                                        ?>
-                                        <li>
-                                            <p>
-                                                <span class="timeline-icon"><i class="fa fa-book" style="color:#42a5f5"></i></span>
-                                                <a href="vendidos-page.php" class="grey-text"><?=$linha1['titulo']?></a>
-                                                <span class="timeline-date"><?=$linha1['data_compra']?></span>
-                                            </p>
-                                        </li>
+                        <ul class="navbar-nav">
+                            <div class="nav-item dropdown" style="float: right; padding: 13px">
+                                <a href="#" onclick="return false;" role="button" data-toggle="dropdown" id="dropdownMenu1" data-target="#" style="float: left" aria-expanded="true">
+                                    <i class="fa fa-bell-o" style="font-size: 20px; float: left; color: white">
+                                    </i>
+                                </a>
+                                
+                                <ul class="dropdown-menu dropdown-menu-left pull-right" role="menu" aria-labelledby="dropdownMenu1">
+                                    <li role="presentation">
+                                        <a href="#" class="dropdown-menu-header">Novos Pedidos</a>
+                                        <?php $id_usuario ?>
+                                    </li>
+                                    <ul class="timeline timeline-icons timeline-sm" style="margin:10px;width:210px">
+                                        
                                         <?php
-                                        //incrementa contador de notificacoes
-                                        $count++;
-                                        }while($linha1 = mysql_fetch_assoc($dados1));
-                                    }else{
-                                    ?>
-                                        <li>
-                                            <p>
-                                                <span class="timeline-icon"><i class="fa fa-check" style="color:#00C851"></i></span>
-                                                Nenhuma notificação
-                                            </p>
-                                        </li>
-                                    <?php
-                                    }
-                                    ?>
+                                        if($total > 0){
+                                            do{
+                                            ?>
+                                            <li>
+                                                <p>
+                                                    <span class="timeline-icon"><i class="fa fa-book" style="color:#42a5f5"></i></span>
+                                                    <a href="vendidos-page.php" class="grey-text"><?=$linha1['titulo']?></a>
+                                                    <span class="timeline-date"><?=$linha1['data_compra']?></span>
+                                                </p>
+                                            </li>
+                                            <?php
+                                            //incrementa contador de notificacoes
+                                            $count++;
+                                            }while($linha1 = mysql_fetch_assoc($dados1));
+                                        }else{
+                                        ?>
+                                            <li>
+                                                <p>
+                                                    <span class="timeline-icon"><i class="fa fa-check" style="color:#00C851"></i></span>
+                                                    Nenhuma notificação
+                                                </p>
+                                            </li>
+                                        <?php
+                                        }
+                                        ?>
+                                    </ul>
+                                    
                                 </ul>
                                 
-                            </ul>
-                            
-                            <?php
-                            if($count > 0){
-                            ?>
-                                <!-- contador de notificacoes -->
-                                <span class="badge badge-notify badge-danger"><?=$count?></span>
-                            <?php
-                            }
-                            ?>
-                        </div>
+                                <?php
+                                if($count > 0){
+                                ?>
+                                    <!-- contador de notificacoes -->
+                                    <span class="badge badge-notify badge-danger"><?=$count?></span>
+                                <?php
+                                }
+                                ?>
+                            </div>
+                        </ul>
                         <!-- SINO DE NOTIFICACAO -->
 
 						<ul class="navbar-nav">
@@ -512,7 +515,6 @@ Autores: Felipe Gomes
                                             });
                                         });
                                     });
-                                    
                                 </script>
                                 <!--teste-->
                                 <div class="input-group mb-3">
@@ -595,18 +597,20 @@ Autores: Felipe Gomes
             <!-- RESULTADO-->
 			 <div id="categoria-didatico" class="banner-categoria justify-content-center">
 				<section>
-					<h3>RESULTADO:</h3>
+					<h3>SUAS COMPRAS:</h3>
 					<!-- Card deck -->
-					<div class="card-deck" style="margin-top: 2%;">
+					<div class="card-deck" style="margin-top: 2%;" >
 						<!-- Grid row -->
 						<div class="row">
 							<?php
 							require_once ("../conection/conexao.php");
 							// cria a instrução SQL que vai selecionar os dados
-							$busca="SELECT id, autor, titulo, preco, categoria, imagem, qtd, descricao FROM livro WHERE id_vendedor=$id ORDER BY id desc";
+							$busca = "SELECT livro.*, livros_comprados.*, usuario.nome FROM livro JOIN livros_comprados JOIN usuario ON livro.id=livros_comprados.id_livro AND livros_comprados.id_comprador = $id AND usuario.id = livros_comprados.id_vendedor";
+                            
 							$dados = mysql_query($busca);
 							// transforma os dados em um array
 							$linha = mysql_fetch_assoc($dados);
+                            
 
 							// calcula quantos dados retornaram
 							$total = mysql_num_rows($dados);
@@ -615,7 +619,9 @@ Autores: Felipe Gomes
 								if($total > 0) {
 									// inicia o loop que vai mostrar todos os dados
 									do {
-
+									    $compraa[$x] = $linha['id_compra'];
+                                        $x++;
+                                        $tamanho = count($compraa);
 							?>
 							<!-- teste -->
 							<div id="livro-<?=$linha['id']?>" class="" style="margin-top: 2%">
@@ -628,26 +634,69 @@ Autores: Felipe Gomes
                                         <input name="id" id="id" type="hidden" value="<?=$linha['id']?>"/>
 
                                         <img height="400" width="300" value="<?=$linha['id']?>" src="../<?=$linha['imagem']?>" class="card-img-top" alt="imagem">
-                                        <a id="link-editar" data-toggle="modal" data-target="#modal-<?=$linha['id']?>" href="#modal-<?=$linha['id']?>" value="<?=$linha['id']?>"><div class="mask rgba-white-slight"></div>
+
+                                        <a id="link-editar" data-toggle="modal" data-target="#modal-info-<?=$linha['id_compra']?>" href="#modal-info-<?=$linha['id_compra']?>" value="<?=$linha['id']?>"><div class="mask rgba-white-slight"></div>
                                         </a>
+
                                     </form>
 								</div>
 								<!-- Card image -->
 								<!-- Card content -->
 								<div class="card-body text-center">
 									<!-- Category & Title -->
-									<a href="" class="grey-text">
-										<h5><?=$linha['autor']?></h5>
-									</a>
+<!--									<a href="" class="grey-text">-->
+										<h5 class="grey-text"><?=$linha['autor']?></h5>
+<!--									</a>-->
 									<h5>
 										<strong>
-                                            <a href="" class="dark-grey-text"><?=$linha['titulo']?></a>
+                                            <p href="" class="dark-grey-text"><?=$linha['titulo']?></p>
 										</strong>
 									</h5>
-									<p>Qtd: <?=$linha['qtd']?></p>
+									<p>Qtd Comprada: <?=$linha['qtd_comprada']?></p>
 									<h4 class="font-weight-bold blue-text">
 										<strong>R$<?=$linha['preco']?></strong>
 									</h4>
+									
+									
+									<?php
+									$id_comprador = $linha['id_comprador'];
+									$id_vendedor = $linha['id_vendedor'];
+									$id_livro = $linha['id'];
+									$id_compra = $linha['id_compra'];
+									
+									
+									
+									$sql2 = "SELECT avaliacao, id_livro FROM avaliacao WHERE id_compra = $id_compra";
+									$dados4 = mysql_query($sql2);
+									$line = mysql_fetch_assoc($dados4);
+									$num_linhas = mysql_num_rows($dados4);
+									
+									if($num_linhas > 0){
+									    for($i = 1; $i <= $line['avaliacao']; $i++){
+									    ?>
+									        
+									        <span style="line-height:32px;
+                                                  font-size:1.25em;
+                                                  color: #FF8800;" class="fa fa-star"  data-rating="1"></span>
+									        
+									    <?php
+									    }
+									}else{
+									?>
+									<!--<a id="link-avaliar" class="btn btn-outline-primary waves-effect" data-toggle="modal" data-target="#modal-avaliar-<?=$linha['id_compra']?>">Avalie!</a>-->
+
+									
+									<form method="post" action="detalhes-avaliacao.php">
+                                        <!--armazena o id do livro para mandar para a  pagina de detalhamento-->
+                                        <input type="hidden" name="id" value="<?=$linha['id']?>"/>
+                                        <input type="hidden" name="id_compra" value="<?=$linha['id_compra']?>"/>
+                                        <input style="height:50px; width:120px" class="btn btn-success waves-effect" type="submit"  value="Detalhes"></input>
+                                    </form>
+									
+									<?php
+									}
+									?>
+									
 								</div>
 								<!-- Card content -->
 								</div>
@@ -655,189 +704,186 @@ Autores: Felipe Gomes
 							</div>
 							<!-- Grid column -->
 							<!-- teste -->
-                            <!-- editar livro-->
-                            <div id="modal-<?=$linha['id']?>" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                                <div class="modal-dialog" role="document">
-                                    <div class="modal-content">
-                                        <form method="post" action="../edit-livro.php" enctype="multipart/form-data" id="formcadlivro" name="formcadlivro">
-                                            <div class="modal-header text-center">
-                                                <h4 class="modal-title w-100 font-weight-bold">Editar Livro</h4>
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-
-                                            <input type="hidden" id="id" name="id" value="<?=$linha['id']?>">
-
-                                            <div class="modal-body mx-3">
-                                                <div class="border-light">
-                                                    <!-- titulo -->
-                                                    <input type="text" id="titulo" name="titulo" class="form-control mb-4" placeholder="Título" value="<?=$linha['titulo']?>">
-                                                </div>
-
-                                                <div class="border-light">
-                                                    <!-- autor -->
-                                                    <input type="text" id="autor" name="autor" class="form-control mb-4" placeholder="Autor" value="<?=$linha['autor']?>">
-                                                </div>
-
-                                                <!--preco-->
-                                                <div class="border-light input-group ">
-                                                    <div class="input-group-prepend mb-4">
-                                                        <div class="input-group-text">R$</div>
-                                                    </div>
-                                                    <!-- preco -->
-                                                    <input type="number" id="preco" name="preco" min="00.00" step="0.01" class="form-control py-0 mb-4" placeholder="00,00" value="<?=$linha['preco']?>">
-                                                </div>
-
-                                                <div class="form-row ">
-                                                    <div class="col border-light">
-                                                        <!-- categoria -->
-                                                    <select id="categoria" name="categoria" class="browser-default custom-select">
-                                                        <option value="" disabled>Selecione uma categoria</option>
-                                                        <option value="<?=$linha['categoria']?>" selected><?=$linha['categoria']?></option>
-                                                        <option value="didatico">Didático</option>
-                                                        <option value="fantasia">Fantasia</option>
-                                                        <option value="infantil">Infantil</option>
-                                                        <option value="geral">Geral</option>
-                                                    </select>
-                                                    </div>
-                                                    <div class="col border-light">
-                                                        <!-- qtd livros -->
-                                                        <input type="number" id="qtd" name="qtd" min="1" max="5" step="1" class="form-control py-0 mb-4" placeholder="Qtd" value="<?=$linha['qtd']?>">
-                                                    </div>
-                                                </div>
-
-                                                <!-- descricao -->
-                                                <div class="form-group border-light mb-4">
-                                                    <textarea class="form-control rounded-0 md-textarea mb-4" id="descricao" name="descricao" rows="3" lenght="300" placeholder="Descrição"><?=$linha['descricao']?></textarea>
-                                                </div>
-
-                                                <script>
-                                                    $(function() {
-                                                        // We can attach the `fileselect` event to all file inputs on the page
-                                                        $(document).on('change', ':file', function() {
-                                                        var input = $(this),
-                                                            numFiles = input.get(0).files ? input.get(0).files.length : 1,
-                                                            label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
-                                                        input.trigger('fileselect', [numFiles, label]);
-                                                        });
-
-                                                        // We can watch for our custom `fileselect` event like this
-                                                        $(document).ready( function() {
-                                                            $(':file').on('fileselect', function(event, numFiles, label) {
-
-                                                                var input = $(this).parents('.input-group').find(':text'),
-                                                                    log = numFiles > 1 ? numFiles + ' files selected' : label;
-
-                                                                if( input.length ) {
-                                                                    input.val(log);
-                                                                } else {
-                                                                    if( log ) alert(log);
-                                                                }
-                                                            });
-                                                        });
-                                                    });
-                                                </script>
-                                                <!--teste-->
-                                                <div class="input-group mb-3">
-                                                    <label class="input-group-prepend">
-                                                        <span class="input-group-text">Upload
-                                                            <input type="file" id="image" name="image" style="display: none;" multiple value="<?=$linha['imagem']?>">
-
-                                                        </span>
-                                                    </label>
-                                                    <!--imagem-->
-                                                    <div class="custom-file">
-                                                        <input id="imagem-text" name="imagem-text" type="text" class="custom-file-input form-control" readonly value="<?=$linha['imagem']?>">
-                                                    </div>
-
-                                                </div>
-                                                <small id="image-preference" class="form-text text-muted" style="margin-top: -5%">
-                                                    De preferência com as dimensões 300x400
-                                                </small>
-
-                                            </div>
-                                            <div class="modal-footer d-flex justify-content-center">
-
-                                                <input id="remove-livro" name="remove-livro" type="hidden" value="<?=$linha['id']?>">
-                                                <input type="button" class="btn btn-danger" data-dismiss="modal" data-toggle="modal"
-                                                       href="#modalConfirmDeleteBook-<?=$linha['id']?>" value="Remover">
-
-                                                <input type="submit" class="btn btn-unique" value="Finalizar" href="ModalSuccessEdit"/>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- modal editar livro -->
-
-                            <!-- modal editado com sucesso -->
-                            <div class="modal fade" id="ModalSuccessEdit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-                              aria-hidden="true">
-                              <div class="modal-dialog modal-notify modal-success" role="document">
+                            
+                            <!-- informacoes de envio -->
+                            <!-- Central Modal Medium Info -->
+                            <div class="modal fade" id="modal-info-<?=$linha['id_compra']?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-notify modal-info" role="document">
                                 <!--Content-->
                                 <div class="modal-content">
-                                  <!--Header-->
-                                  <div class="modal-header">
-                                    <p class="heading lead">Sucesso</p>
-
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                      <span aria-hidden="true" class="white-text">&times;</span>
-                                    </button>
-                                  </div>
-
-                                  <!--Body-->
-                                  <div class="modal-body">
-                                    <div class="text-center">
-                                      <i class="fa fa-check fa-4x mb-3 animated rotateIn"></i>
-                                      <p>Seu livro foi editado com Sucesso!</p>
+                                    <!--Header-->
+                                    <div class="modal-header">
+                                        <p class="heading lead">Acompanhar Entrega</p>
+                            
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true" class="white-text">&times;</span>
+                                        </button>
                                     </div>
-                                  </div>
-
-                                  <!--Footer-->
-                                  <div class="modal-footer justify-content-center">
-                                    <button type="button" class="btn btn-primary" onclick="window.location.href='pages/user-page.php'">OK!</button>
-                                  </div>
+                            
+                                    <!--Body-->
+                                    <div class="modal-body">
+                                        
+                                        <div class="container">
+                                            <h5><strong>Dados da Compra</strong></h5></br>
+																						
+                                            <p>
+                                                <strong>Título do Livro: </strong>
+                                                <?=$linha['titulo']?>
+                                            </p>
+                                            <p>
+                                                <strong>Nome do Vendedor: </strong>
+                                                <?=$linha['nome']?>
+                                            </p>
+                                            <p>
+                                                <strong>Data da Compra: </strong>
+                                                <?=$linha['data_compra']?>
+                                            </p>
+                                            <?php
+                                            if($linha['status'] == "solicitado"){
+                                            ?>
+                                                <p style="color:red;">
+                                                    <strong class="dark-grey-text">Status da entrega: </strong> 
+                                                    Solicitado
+                                                </p>
+                                            <?php
+                                            }else if($linha['status'] == "a caminho"){
+                                            ?>
+                                                <p style="color:blue;">
+                                                    <strong class="dark-grey-text">Status da entrega: </strong>
+                                                    A Caminho
+                                                </p>
+                                            <?php
+                                            }else if($linha['status'] == "entregue"){
+                                            ?>
+                                                <p style="color:green;">
+                                                    <strong class="dark-grey-text">Status da entrega: </strong>
+                                                    Entregue
+                                                </p>
+                                            <?php
+                                            }
+                                                
+                                        ?>
+                                        </div>
+                                    </div>
+                            
+                                    <!--Footer-->
+                                    <div class="modal-footer justify-content-center">
+                                        <button  class="btn btn-outline-primary waves-effect " data-dismiss="modal">Sair</button>
+                                    </div>
                                 </div>
                                 <!--/.Content-->
-                              </div>
                             </div>
-                            <!-- modal editado com sucesso -->
+                            </div>
                             
-                            <!--modal confirmacao de remocao do livro-->
-                            <div class="modal fade" id="modalConfirmDeleteBook-<?=$linha['id']?>" tabindex="-1"
-                                 role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                <div class="modal-dialog modal-sm modal-notify modal-danger " role="document">
+                            <!-- avaliar -->
+                            <div class="modal fade" id="modal-avaliar-<?=$linha['id_compra']?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-notify modal-warning" role="document">
                                     <!--Content-->
-                                    <div class="modal-content text-center">
+                                    <div class="modal-content">
                                         <!--Header-->
-                                        <div class="modal-header d-flex justify-content-center">
-                                            <p class="heading">Deseja Continuar?</p>
+                                        <div class="modal-header">
+                                            <p class="heading lead">Avaliar Vendedor</p>
+                                
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true" class="white-text">&times;</span>
+                                            </button>
                                         </div>
-
+                                
                                         <!--Body-->
                                         <div class="modal-body">
-                                            <i class="fa fa-times fa-4x animated rotateIn"></i>
-                                            <p>Tem certeza que deseja excluir este livro? ID = <?=$linha['id']?></p>
+                                            <style>
+                                                .star-rating {
+                                                  line-height:32px;
+                                                  font-size:1.25em;
+                                                }
+                                                
+                                                .star-rating .fa-star{color: yellow;}
+                                            </style>
+                                            
+                                            <?php 
+                                            echo $linha['id']."/"; 
+                                            echo $linha['id_vendedor']."/";
+                                            echo $linha['id_comprador']."/";
+                                            echo $linha['id_compra'];
+                                            
+                                            $contador = 0;
+                                            ?>
+                                            
+                                            
+                                            <div class="container" align="center">
+                                                
+                                                <div class="row">
+                                                    <div class="col-lg-12">
+                                                        <div class="star-rating">
+                                                            <span class="fa fa-star-o" data-rating="1"></span>
+                                                            <span class="fa fa-star-o" data-rating="2"></span>
+                                                            <span class="fa fa-star-o" data-rating="3"></span>
+                                                            <span class="fa fa-star-o" data-rating="4"></span>
+                                                            <span class="fa fa-star-o" data-rating="5"></span>
+                                                            <input type="hidden" name="whatever1" class="rating-value" value="0">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!--<p id='demo'>0</p>-->
+                                            </div>
+                                            
+                                            <?php
+                                            echo $linha['id_compra'];
+                                            $contador++;
+                                            ?>
+                                            
+                                            <script id="script-<?=$linha['id_compra']?>" type="text/javascript">
+                                                var $star_rating = $('.star-rating .fa');
+                                                var estrela = 0;
+                                                var SetRatingStar = function() {
+                                                  return $star_rating.each(function() {
+                                                    if (parseInt($star_rating.siblings('input.rating-value').val()) >= parseInt($(this).data('rating'))) {
+                                                      return $(this).removeClass('fa-star-o').addClass('fa-star');
+                                                    } else {
+                                                      return $(this).removeClass('fa-star').addClass('fa-star-o');
+                                                    }
+                                                  });
+                                                };
+
+                                                $star_rating.on('click', function() {
+                                                  $star_rating.siblings('input.rating-value').val($(this).data('rating'));
+                                                //   document.getElementById("demo").innerHTML = parseInt($(this).data('rating'));
+                                                //   estrela = parseInt($(this).data('rating'));
+                                                  estrela = String($(this).data('rating'));
+                                                  console.log(estrela);
+                                                //   document.getElementById("demo").innerHTML = estrela;
+                                                  return SetRatingStar();
+                                                });
+                                                
+                                                SetRatingStar();
+                                                $(document).ready(function() {
+                                                
+                                                });
+                                                
+                                                function Enviar(){
+                                                    window.location.href="http://libsys.pe.hu/pages/avaliar.php?estrela="+estrela+"&id_compra="+<?=$compraa?>;
+                                                }
+                                                
+                                            </script>
+                                            <?php
+                                            $tamanho--;
+                                            echo "tamanho ".$tamanho;
+                                            ?>
+                                            <!-- AQUI -->
                                         </div>
-
+                                
                                         <!--Footer-->
-                                        <div class="modal-footer flex-center  btn-group">
-                                            <form action="../remove-livro.php" method="post">
-                                                <input id="remove-livro" name="remove-livro" type="hidden" value="<?=$linha['id']?>">
-                                                <input type="submit" class="btn btn-outline-danger waves-effect" value="Sim" style="float:left;">
-
-                                                <input type="button" class="btn btn-danger waves-effect" data-dismiss="modal" value="Não" style="float:left;">
-
-
-
-                                            </form>
+                                        <div class="modal-footer justify-content-center">
+                                            <a onclick="Enviar()" class="btn btn-outline-warning waves-effect ">Avaliar</a>
                                         </div>
                                     </div>
                                     <!--/.Content-->
                                 </div>
                             </div>
-                            <!--modal confirmacao de remocao do livro-->
+                            <!-- avaliar -->
+                            
+                            <!-- Central Modal Medium Info-->
+                            <!-- informacoes de envio -->
 
 							<?php
 										// finaliza o loop que vai mostrar os dados
@@ -890,15 +936,15 @@ Autores: Felipe Gomes
 
 		<!-- SCRIPTS -->
 		<!-- JQuery -->
-
-        <script type="text/javascript" src="ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-		<script type="text/javascript" src="../js/jquery-3.3.1.min.js"></script>
-		<!-- Bootstrap tooltips -->
-		<script type="text/javascript" src="../js/popper.min.js"></script>
-		<!-- Bootstrap core JavaScript -->
-		<script type="text/javascript" src="../js/bootstrap.min.js"></script>
-		<!-- MDB core JavaScript -->
-		<script type="text/javascript" src="../js/mdb.min.js"></script>
+        <script type="text/javascript" src="../js/jquery-3.3.1.min.js"></script>
+        <!-- Bootstrap tooltips -->
+        <script type="text/javascript" src="../js/popper.min.js"></script>
+        <!-- Bootstrap core JavaScript -->
+        <script type="text/javascript" src="../js/bootstrap.min.js"></script>
+        <!-- MDB core JavaScript -->
+        <script type="text/javascript" src="../js/mdb.min.js"></script>
+        <script src="../js/jquery.bootstrap.wizard.js"></script>
+        <script src="../js/jquery.bootstrap.wizard.min.js"></script>
     </body>
 
 </html>

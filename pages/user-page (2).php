@@ -1,4 +1,4 @@
-﻿<!doctype html>
+<!doctype html>
 <html>
 
 	<head>
@@ -8,7 +8,7 @@
             {
             unset($_SESSION['user']);
             unset($_SESSION['password']);
-            header('location:index.html');
+            header('location:index.php');
             }
             $nome = $_SESSION['nome'];
             $email = $_SESSION['user'];
@@ -78,7 +78,7 @@
 								</a>
 								<div class="dropdown-menu">
 									<a class="dropdown-item" href="#" data-toggle="modal" data-target="#editar-cadastro">Editar Cadastro</a>
-									<a class="dropdown-item" href="../index.html">Sair</a>
+									<a class="dropdown-item" href="../index.php">Sair</a>
 								</div>
 
 							</li>
@@ -926,7 +926,7 @@
 			<!-- Copyright -->
 			<div class="footer-copyright text-center py-3">
 				© 2018 Copyright
-				<a href="../index.html"> LibSys Online</a>
+				<a href="../index.php"> LibSys Online</a>
 			</div>
 			<!-- Copyright -->
 

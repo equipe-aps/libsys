@@ -3,11 +3,11 @@ Autores: Felipe Gomes
 		 Gustavo Soares
 		 Joel Felipe
 -->
+
 <!doctype html>
 <html lang="pt-br">
 
 	<head>
-
         <?=
             session_start();
             if((!isset ($_SESSION['user']) == true) and (!isset ($_SESSION['password']) == true))
@@ -16,6 +16,7 @@ Autores: Felipe Gomes
             unset($_SESSION['password']);
             header('location:index.php');
             }
+			$id = $_SESSION['id'];
             $nome = $_SESSION['nome'];
             $email = $_SESSION['user'];
             $idade = $_SESSION['idade'];
@@ -37,7 +38,7 @@ Autores: Felipe Gomes
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 		<meta http-equiv="x-ua-compatible" content="ie=edge">
 		<title>LibSys</title>
-
+		<?php header("Content-Type: text/html; charset=utf-8",true);?>
 		<!-- Font Awesome -->
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 		<!-- Bootstrap core CSS -->
@@ -79,7 +80,7 @@ Autores: Felipe Gomes
 								<a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="navDrop">Vender Livros</a>
 								<div class="dropdown-menu">
 									<a class="dropdown-item" data-toggle="modal" data-target="#cadastrar-livro">Cadastrar Livros</a>
-									<a class="dropdown-item" href="">Livros Cadastrados</a>
+									<a class="dropdown-item" href="cadastrados-page.php">Livros Cadastrados</a>
 								</div>
 							</li>
 
@@ -90,16 +91,16 @@ Autores: Felipe Gomes
 								<a href="#" class="nav-link">Livros Vendidos</a>
 							</li>
 						</ul>
-
-                        <!-- SINO DE NOTIFICACAO -->
+						
+						<!-- SINO DE NOTIFICACAO -->
                         <?php
                         require_once("../conection/conexao.php");
-                        $sql1 = "SELECT livros_comprados.*, livro.* FROM livros_comprados JOIN livro ON livros_comprados.id_vendedor = $id_usuario AND livros_comprados.status = 'solicitado' AND livro.id = livros_comprados.id_livro";
-                        $dados1 = mysql_query($sql1);
+                        $sql = "SELECT livros_comprados.*, livro.* FROM livros_comprados JOIN livro ON livros_comprados.id_vendedor = $id_usuario AND livros_comprados.status = 'solicitado' AND livro.id = livros_comprados.id_livro";
+                        $dados = mysql_query($sql);
                         // transforma os dados em um array
-                        $linha1 = mysql_fetch_assoc($dados1);
+                        $linha = mysql_fetch_assoc($dados);
                         // calcula quantos dados retornaram
-                        $total = mysql_num_rows($dados1);
+                        $total = mysql_num_rows($dados);
                         $count = 0;
                         ?>
                         <div class="dropdown" style="float: right; padding: 13px">
@@ -122,14 +123,14 @@ Autores: Felipe Gomes
                                         <li>
                                             <p>
                                                 <span class="timeline-icon"><i class="fa fa-book" style="color:#42a5f5"></i></span>
-                                                <a href="vendidos-page.php" class="grey-text"><?=$linha1['titulo']?></a>
-                                                <span class="timeline-date"><?=$linha1['data_compra']?></span>
+                                                <a href="vendidos-page.php" class="grey-text"><?=$linha['titulo']?></a>
+                                                <span class="timeline-date"><?=$linha['data_compra']?></span>
                                             </p>
                                         </li>
                                         <?php
                                         //incrementa contador de notificacoes
                                         $count++;
-                                        }while($linha1 = mysql_fetch_assoc($dados1));
+                                        }while($linha = mysql_fetch_assoc($dados));
                                     }else{
                                     ?>
                                         <li>
@@ -204,6 +205,10 @@ Autores: Felipe Gomes
 			</div>
 			<!--Modal: modalConfirmDelete-->
 			<!--modal confirmacao de remocao do usuario-->
+
+
+
+
 
 			<!-- Modal popup editar cadastro -->
 			<div class="modal fade" id="editar-cadastro" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -407,7 +412,8 @@ Autores: Felipe Gomes
 
 							</div>
 							<div class="modal-footer d-flex justify-content-center">
-								<input type="submit" class="btn btn-unique" value="Cadastrar Livro!">
+
+								<input type="submit" class="btn btn-unique" value="Cadastrar Livro!"/>
 							</div>
 						</form>
 					</div>
@@ -415,11 +421,126 @@ Autores: Felipe Gomes
 			</div>
 			<!-- modal cadastrar livro -->
 
+
 		</header>
 		<!--Main Navigation-->
 
 		<!--Main Layout-->
         <main>
+            <?php
+            //require_once ("../conection/conexao.php");
+            //$id = $_POST['id'];
+            ?>
+            <!-- modal popup editar livro -->
+            <div class="modal fade" id="editar-livro" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <?php
+
+                    ?>
+                    <div class="modal-content">
+                        <form method="post" action="../cad_livro.php" enctype="multipart/form-data" id="formcadlivro" name="formcadlivro">
+                            <div class="modal-header text-center">
+                                <h4 class="modal-title w-100 font-weight-bold">Cadastre aqui seu livro</h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+
+                            </div>
+                            <div class="modal-body mx-3">
+                                <div class="border-light">
+                                    <!-- titulo -->
+                                    <input type="text" id="titulo" name="titulo" class="form-control mb-4" placeholder="Título" value="<?=$_POST['id']?>">
+                                </div>
+
+                                <div class="border-light">
+                                    <!-- autor -->
+                                    <input type="text" id="autor" name="autor" class="form-control mb-4" placeholder="Autor" value="">
+                                </div>
+
+                                <!--preco-->
+                                <div class="border-light input-group ">
+                                    <div class="input-group-prepend mb-4">
+                                        <div class="input-group-text">R$</div>
+                                    </div>
+                                    <!-- preco -->
+                                    <input type="number" id="preco" name="preco" min="00.00" step="0.01" class="form-control py-0 mb-4" placeholder="00,00" value="">
+                                </div>
+
+                                <div class="form-row ">
+                                    <div class="col border-light">
+                                        <!-- categoria -->
+                                    <select id="categoria" name="categoria" class="browser-default custom-select">
+                                        <option value="" disabled>Selecione uma categoria</option>
+                                        <option value="didatico" selected>Didático</option>
+                                        <option value="fantasia">Fantasia</option>
+                                        <option value="infantil">Infantil</option>
+                                        <option value="geral">Geral</option>
+                                    </select>
+                                    </div>
+                                    <div class="col border-light">
+                                        <!-- qtd livros -->
+                                        <input type="number" id="qtd" name="qtd" min="1" max="5" step="1" class="form-control py-0 mb-4" placeholder="Qtd" value="">
+                                    </div>
+                                </div>
+
+                                <!-- descricao -->
+                                <div class="form-group border-light mb-4">
+                                    <textarea class="form-control rounded-0 md-textarea mb-4" id="descricao" name="descricao" rows="3" lenght="300" placeholder="Descrição"></textarea>
+                                </div>
+
+                                <script>
+                                    $(function() {
+                                        // We can attach the `fileselect` event to all file inputs on the page
+                                        $(document).on('change', ':file', function() {
+                                        var input = $(this),
+                                            numFiles = input.get(0).files ? input.get(0).files.length : 1,
+                                            label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+                                        input.trigger('fileselect', [numFiles, label]);
+                                        });
+
+                                        // We can watch for our custom `fileselect` event like this
+                                        $(document).ready( function() {
+                                            $(':file').on('fileselect', function(event, numFiles, label) {
+
+                                                var input = $(this).parents('.input-group').find(':text'),
+                                                    log = numFiles > 1 ? numFiles + ' files selected' : label;
+
+                                                if( input.length ) {
+                                                    input.val(log);
+                                                } else {
+                                                    if( log ) alert(log);
+                                                }
+                                            });
+                                        });
+                                    });
+                                </script>
+                                <!--teste-->
+                                <div class="input-group mb-3">
+                                    <label class="input-group-prepend">
+                                        <span class="input-group-text">Upload
+                                            <input type="file" id="image" name="image" style="display: none;" multiple>
+
+                                        </span>
+                                    </label>
+                                    <!--imagem-->
+                                    <div class="custom-file">
+                                        <input type="text" class="custom-file-input form-control" readonly value="Nenhuma Imagem">
+                                    </div>
+
+                                </div>
+                                <small id="image-preference" class="form-text text-muted" style="margin-top: -5%">
+                                    De preferência com as dimensões 300x400
+                                </small>
+
+                            </div>
+                            <div class="modal-footer d-flex justify-content-center">
+                                <input type="submit" class="btn btn-unique" value="Cadastrar Livro!"/>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!-- modal editar livro -->
 
             <div style="padding-left:400px; padding-right:20%; margin-bottom:100px; margin-top:25px" class="align-center justidy-content-center">
                 <ul class="nav nav-pills mb-3 align-center justify-contnt-center" id="pills-tab" role="tablist" style="margin-top: -5%; border: 1px solid lightgray">
@@ -454,7 +575,7 @@ Autores: Felipe Gomes
 						<div class="col-md-9">
     						<h2>O que você procura?</h2>
 							<div id="custom-search-input">
-								<div class="input-group col-md-12" role="group">
+								<div class="input-group btn-group col-md-12" role="group">
 									<form id="form-busca" name="form-busca" class="input-group form-inline md-form form-sm" method="post" action="busca-page.php">
 										<input id="busca-digitada" name="busca-digitada" type="text" class="form-control form-control-sm mr-3 w-75" placeholder="Buscar"/>
 										<i class="fa fa-search" aria-hidden="true"></i>
@@ -471,9 +592,10 @@ Autores: Felipe Gomes
 				</div>
             </div>
 			<!-- BUSCA-->
-			 <div id="result-busca" class="banner-categoria justify-content-center">
+            <!-- RESULTADO-->
+			 <div id="categoria-didatico" class="banner-categoria justify-content-center">
 				<section>
-					<h3>RESULTADO:</h3>
+					<h3>SUAS VENDAS:</h3>
 					<!-- Card deck -->
 					<div class="card-deck" style="margin-top: 2%;">
 						<!-- Grid row -->
@@ -481,10 +603,12 @@ Autores: Felipe Gomes
 							<?php
 							require_once ("../conection/conexao.php");
 							// cria a instrução SQL que vai selecionar os dados
-							$busca="SELECT id, autor, titulo, preco, imagem, qtd FROM livro WHERE titulo LIKE '%$buscas%' AND qtd>0 ORDER BY id desc";
+							$busca = "SELECT livros_comprados.*, livro.*, usuario.nome FROM livros_comprados JOIN livro JOIN usuario ON livros_comprados.id_vendedor = $id_usuario AND livro.id = livros_comprados.id_livro AND usuario.id = livros_comprados.id_comprador";
+
 							$dados = mysql_query($busca);
 							// transforma os dados em um array
 							$linha = mysql_fetch_assoc($dados);
+
 							// calcula quantos dados retornaram
 							$total = mysql_num_rows($dados);
 							$conta = 1;
@@ -492,42 +616,47 @@ Autores: Felipe Gomes
 								if($total > 0) {
 									// inicia o loop que vai mostrar todos os dados
 									do {
+
 							?>
-
-
 							<!-- teste -->
-							<div class="col-lg-3 col-md-6 mb-lg-0 mb-4 " style="margin-top: 2%">
+							<div id="livro-<?=$linha['id']?>" class="" style="margin-top: 2%">
 								<!-- Card -->
-								<div class="card align-items-center" style="width:250px; margin-right: 250px;">
+
+								<div class="card align-items-center" style="width:250px; ">
 								<!-- Card image -->
 								<div class="view overlay">
-									<form method="post" action="livro-detalhado.php">
-										<!--armazena o id do livro para mandar para a  pagina de detalhamento-->
-										<input type="hidden" name="id" value="<?=$linha['id']?>"/>
-										<input name="id" type="image" height="400" width="300" value="<?=$linha['id']?>" src="../<?=$linha['imagem']?>" class="card-img-top" alt=""/>
-									</form>
+                                    <form id="enviar" method="post" action="rastreamento-page.php">
+                                        <input name="id" id="id" type="hidden" value="<?=$linha['id']?>"/>
+                                        <!--armazena o id do livro para mandar para a  pagina de detalhamento-->
+                                        <img height="400" width="300" value="<?=$linha['id']?>" src="../<?=$linha['imagem']?>" class="card-img-top" alt="imagem">
+
+                                        <a id="link-editar" data-toggle="modal" data-target="#modal-info-<?=$linha['id_compra']?>" href="#modal-info-<?=$linha['id_compra']?>" value="<?=$linha['id']?>"><div class="mask rgba-white-slight"></div>
+                                        </a>
+                                    </form>
 								</div>
 								<!-- Card image -->
 								<!-- Card content -->
 								<div class="card-body text-center">
 									<!-- Category & Title -->
-									<a href="livro-detalhado.php" class="grey-text">
-										<h5><?=$linha['autor']?></h5>
-									</a>
+<!--									<a href="" class="grey-text">-->
+										<h5 class="grey-text"><?=$linha['autor']?></h5>
+<!--									</a>-->
 									<h5>
 										<strong>
-											<a href="livro-detalhado.php" class="dark-grey-text"><?=$linha['titulo']?></a>
+                                            <p href="" class="dark-grey-text"><?=$linha['titulo']?></p>
 										</strong>
 									</h5>
-									<p>Qtd: <?=$linha['qtd']?></p>
+									<p>Qtd Vendida: <?=$linha['qtd_comprada']?></p>
 									<h4 class="font-weight-bold blue-text">
 										<strong>R$<?=$linha['preco']?></strong>
 									</h4>
-                                    <form method="post" action="livro-detalhado.php">
-										<!--armazena o id do livro para mandar para a  pagina de detalhamento-->
-										<input type="hidden" name="id" value="<?=$linha['id']?>"/>
-										<button name="id" value="<?=$linha['id']?>" class="btn btn-success">Comprar</button>
-									</form>
+									<?php
+									   if($linha['status'] == "entregue"){
+									   ?>
+                                        <h5 style="color:green;"><b>Entregue!</b></h5>
+									   <?php
+									   }
+									?>
 								</div>
 								<!-- Card content -->
 								</div>
@@ -535,6 +664,98 @@ Autores: Felipe Gomes
 							</div>
 							<!-- Grid column -->
 							<!-- teste -->
+                            
+                            <!-- informacoes de envio -->
+                            <!-- Central Modal Medium Info -->
+                            <div class="modal fade" id="modal-info-<?=$linha['id_compra']?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-notify modal-info" role="document">
+                                <!--Content-->
+                                <div class="modal-content">
+                                    <!--Header-->
+                                    <div class="modal-header">
+                                        <p class="heading lead"><?=$linha['titulo']?></p>
+                            
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true" class="white-text">&times;</span>
+                                        </button>
+                                    </div>
+                            
+                                    <!--Body-->
+                                    <div class="modal-body">
+                                        
+                                        <div class="container">
+                                            <h5><strong>Dados da Compra</strong></h5></br>
+																						
+                                            <p>
+                                                <strong>Título do Livro: </strong>
+                                                <?=$linha['titulo']?>
+                                            </p>
+                                            <p>
+                                                <strong>Nome do Comprador: </strong>
+                                                <?=$linha['nome']?>
+                                            </p>
+                                            <p>
+                                                <strong>Data da Compra: </strong>
+                                                <?=$linha['data_compra']?>
+                                            </p>
+                                            
+                                            <?php
+                                            
+                                            if($linha['status'] == "solicitado"){
+                                            ?>
+                                                <form action="avancar-status.php" method="post">
+                                                    <p style="color:red;">
+                                                        <strong class="dark-grey-text">Status da entrega: </strong> 
+                                                        Solicitado
+                                                    </p>
+                                                    <!-- passar informacoes do livro e do comprador -->
+                                                    <input id="id_compra" name="id_compra" type="hidden" value="<?=$linha['id_compra']?>">
+                                                    <input id="status_livro" name="status_livro" type="hidden" value="<?=$linha['status']?>">
+                                                    <input type="submit" class="btn btn-primary" href="avancar-status.php" value="Encaminhar"><i class="fa fa-arrow-right mr-3" style="color:white"></i>
+                                                </form>
+                                            <?php
+                                            }else if($linha['status'] == "a caminho"){
+                                            ?>
+                                                <form action="avancar-status.php" method="post">
+                                                    <p style="color:blue;">
+                                                        <strong class="dark-grey-text">Status da entrega: </strong> 
+                                                        A caminho
+                                                    </p>
+                                                    <!-- passar informacoes do livro e do comprador -->
+                                                    <input id="id_compra" name="id_compra" type="hidden" value="<?=$linha['id_compra']?>">
+                                                    <input id="status_livro" name="status_livro" type="hidden" value="<?=$linha['status']?>">
+                                                    <input type="submit" class="btn btn-success" href="avancar-status.php" value="Entregar"><i class="fa fa-arrow-right mr-3" style="color:white"></i>
+                                                </form>
+                                            <?php
+                                            }else if($linha['status'] == "entregue"){
+                                            ?>
+                                                <p style="color:green;">
+                                                    <strong class="dark-grey-text">Status da entrega: </strong> 
+                                                    Entregue
+                                                </p>
+                                            <?php
+                                            }
+                                                
+                                        ?>
+                                            
+                                            
+                                        </div>
+                                        
+                                    </div>
+                            
+                                    <!--Footer-->
+                                    <div class="modal-footer justify-content-center">
+                                        
+                                        <a  class="btn btn-outline-primary waves-effect" data-dismiss="modal">Sair</a>
+                                    </div>
+                                </div>
+                                <!--/.Content-->
+                            </div>
+                            </div>
+                            
+                            <!-- Central Modal Medium Info-->
+                            <!-- informacoes de envio -->
+
 							<?php
 										// finaliza o loop que vai mostrar os dados
 										}while($linha = mysql_fetch_assoc($dados));
@@ -552,6 +773,7 @@ Autores: Felipe Gomes
 					<!-- Card deck -->
 				</section>
 			</div>
+            <!-- RESULTADO-->
         </main>
 		<!--Main Layout-->
 
@@ -582,16 +804,30 @@ Autores: Felipe Gomes
 
 		</footer>
 		<!--Footer-->
+		
+		<!-- Bootstrap -->
+        
 
 		<!-- SCRIPTS -->
 		<!-- JQuery -->
-		<script type="text/javascript" src="../js/jquery-3.3.1.min.js"></script>
+
+        
+		
 		<!-- Bootstrap tooltips -->
 		<script type="text/javascript" src="../js/popper.min.js"></script>
 		<!-- Bootstrap core JavaScript -->
 		<script type="text/javascript" src="../js/bootstrap.min.js"></script>
 		<!-- MDB core JavaScript -->
 		<script type="text/javascript" src="../js/mdb.min.js"></script>
-		</body>
+		
+		
+		
+		<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <!-- Include all compiled plugins (below), or include individual files as needed -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <script src="../js/jquery.bootstrap.wizard.js"></script>
+        
+    </body>
 
 </html>

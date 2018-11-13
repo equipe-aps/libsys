@@ -41,15 +41,16 @@ Autores: Felipe Gomes
     <?php header("Content-Type: text/html; charset=utf-8",true);?>
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <!-- Bootstrap core CSS -->
-    <link href="../css/bootstrap.min.css" rel="stylesheet">
-    <!-- Material Design Bootstrap -->
-    <link href="../css/mdb.min.css" rel="stylesheet">
-    <!-- Your custom styles (optional) -->
-    <link href="../css/style.css" rel="stylesheet">
-    <!-- More dependences -->
-    <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
-    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	<!-- Bootstrap core CSS -->
+	<link href="../css/bootstrap.min.css" rel="stylesheet">
+	<!-- Material Design Bootstrap -->
+	<link href="../css/mdb.min.css" rel="stylesheet">
+	<!-- Your custom styles (optional) -->
+	<link href="../css/style.css" rel="stylesheet">
+	<!-- More dependences -->
+	<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+	<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
     <!-- Link Drive Folder Images https://drive.google.com/drive/u/0/folders/15rtNhjuVU4cFGFKyF55ZQrQbvDlT2n8i -->
     <!-- Icon -->
     <link rel="shortcut icon"  href="../favicon.ico">
@@ -58,6 +59,7 @@ Autores: Felipe Gomes
     <?php
     require_once ("../conection/conexao.php");
     $id = $_POST['id'];
+    $id_compra = $_POST['id_compra'];
 
     $sql="SELECT id, id_vendedor, autor, descricao, titulo, preco, imagem, qtd FROM livro WHERE id=$id ORDER BY id desc";
     $dados = mysql_query($sql);
@@ -400,124 +402,6 @@ Autores: Felipe Gomes
             </div>
         </div>
         <!-- BUSCA-->
-
-
-        <!--modal comprar livro-->
-
-        <!-- Modal: modalQuickView -->
-        <div class="modal fade in" id="modalComprarLivro" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-          aria-hidden="true">
-          <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-              <div class="modal-body">
-                <div class="row">
-                  <div class="col-lg-5">
-                    <!--Carousel Wrapper-->
-                    <div id="carousel-thumb" class="carousel slide carousel-fade carousel-thumbnails" data-ride="carousel">
-                      <!--Slides-->
-                      <div class="carousel-inner" role="listbox">
-                        <div class="carousel-item active">
-                          <img class="d-block w-100" src="../<?=$linha['imagem']?>"
-                            alt="First slide">
-                        </div>
-                      </div>
-                      <!--/.Slides-->
-                      <!--Controls-->
-                      <a class="carousel-control-prev" href="#carousel-thumb" role="button" data-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span class="sr-only">Previous</span>
-                      </a>
-                      <a class="carousel-control-next" href="#carousel-thumb" role="button" data-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span class="sr-only">Next</span>
-                      </a>
-                      <!--/.Controls-->
-                    </div>
-                    <!--/.Carousel Wrapper-->
-                  </div>
-                  <div class="col-lg-7">
-                    <h2 class="h2-responsive product-name">
-                      <strong><?=$linha['titulo']?></strong>
-                    </h2>
-                    <h4 class="h4-responsive">
-                      <span class="green-text">
-                        <strong>R$ <?=$linha['preco']?></strong>
-                      </span>
-                      <span class="grey-text">
-                        <small>
-                          <s>R$ <?=$linha['preco']+20?></s>
-                        </small>
-                      </span>
-                    </h4>
-
-                    <!--Accordion wrapper-->
-                    <div class="accordion" id="accordion" role="tablist" aria-multiselectable="true">
-
-                      <!-- Accordion card -->
-                      <div class="card">
-
-                        <!-- Card header -->
-                        <div class="card-header" role="tab" id="headingOne">
-                          <a class="collapsed" data-toggle="collapse" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                            <h5 class="mb-0">
-                              Descrição <i class="fa fa-angle-down rotate-icon"></i>
-                            </h5>
-                          </a>
-                        </div>
-
-                        <!-- Card body -->
-                        <div id="collapseOne" class="collapse show" role="tabpanel" aria-labelledby="headingOne"
-                          data-parent="#accordion">
-                          <div class="card-body">
-                            <?=$linha['descricao']?>
-                          </div>
-                        </div>
-                      </div>
-                      <!-- Accordion card -->
-
-                      
-                    </div>
-                    <!--/.Accordion wrapper-->
-
-                    <!-- Add to Cart -->
-                    <div class="card-body">
-                      <form method="post" action="../comprar-livro.php">
-                      <div class="row">
-                        <div class="col-md-6">
-                          <div class="md-form">
-                              <select id="qtd-comprada" name="qtd-comprada" class="mdb-select colorful-select dropdown-primary">
-                                  <option value="0" disabled selected>Selecione a Quantidade</option>
-                                  <option value="1">1</option>
-                                  <option value="2">2</option>
-                                  <option value="3">3</option>
-                                  <option value="4">4</option>
-                                  <option value="5">5</option>
-                                </select>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div class="text-center">
-                          <!-- criacao de cookies-->
-
-
-                          <!-- criacao de cookies-->
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Sair</button>
-                        <input type="hidden" id="comprar" name="comprar" value="<?=$linha['id']?>">
-                        <button type="submit" class="btn btn-primary">Comprar
-                          <i class="fa fa-shopping-cart ml-2" aria-hidden="true"></i>
-                        </button>
-                      </div>
-                        </form>
-                    </div>
-                    <!-- /.Add to Cart -->
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
     </header>
     <!--Main Navigation-->
 
@@ -537,52 +421,71 @@ Autores: Felipe Gomes
                     <!--autor com tab-->
                     <h6 class="font-weight-bold grey-text mb-3" style="padding-left:2em ">Autor: <?=$linha['autor']?></h6>
                     <hr class="grey"/>
-                    <h6 class="font-weight-bold mb-3">Quantidade Disponível: <?=$linha['qtd']?></h6>
-                    <h4 class="h3-responsive font-weight-bold mb-3">PREÇO: R$<?=$linha['preco']?></h4>
+                    <h4 class="font-weight-bold mb-3" align="center">Avalie o Vendedor</h4>
+                    <!-- estrelas de avaliacao -->
+                    <style>
+                        .star-rating {
+                          line-height:32px;
+                          font-size:1.25em;
+                        }
+                        
+                        .star-rating .fa-star{color: #FF8800;}
+                    </style>
+                    <div class="container" align="center">       
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="star-rating">
+                                    <span class="fa fa-star-o" data-rating="1"></span>
+                                    <span class="fa fa-star-o" data-rating="2"></span>
+                                    <span class="fa fa-star-o" data-rating="3"></span>
+                                    <span class="fa fa-star-o" data-rating="4"></span>
+                                    <span class="fa fa-star-o" data-rating="5"></span>
+                                    <input type="hidden" name="whatever1" class="rating-value" value="0">
+                                </div>
+                            </div>
+                        </div>
+                        <!--<p id='demo'>0</p>-->
+                    </div>
                     
-                    <?php
-                    if($linha['qtd'] != 0){
-                    ?>
-                    <div class="row justify-content-md-center center-block">
+                    <script>
+                        var $star_rating = $('.star-rating .fa');
+                        var estrela = 0;
+                        var SetRatingStar = function() {
+                          return $star_rating.each(function() {
+                            if (parseInt($star_rating.siblings('input.rating-value').val()) >= parseInt($(this).data('rating'))) {
+                              return $(this).removeClass('fa-star-o').addClass('fa-star');
+                            } else {
+                              return $(this).removeClass('fa-star').addClass('fa-star-o');
+                            }
+                          });
+                        };
 
-                        <form method="post" action="#" name="formcomprar" id="formcomprar">
-                            <!--armazena o id do livro para mandar para a  pagina de detalhamento-->
-                            <input type="hidden" name="id" value="<?=$linha['id']?>"/>
-                            <button type="button" name="id" value="<?=$linha['id']?>" class="btn btn-success waves-effect"
-                                    data-toggle="modal" data-target="#modalComprarLivro">
-                                <i class="fa fa-shopping-cart" style="margin-right:10px;"></i>Comprar</button>
-                        </form>
-                        <!--<form method="post" action="#" name="formcomprar" id="formcomprar">-->
-                            <!--armazena o id do livro para mandar para a  pagina de detalhamento-->
-                        <!--    <input type="hidden" name="id" value="<?=$linha['id']?>"/>-->
-                        <!--    <button name="id" value="<?=$linha['id']?>" class="btn btn-outline-success waves-effect">-->
-                        <!--        <i class="fa fa-shopping-cart" style="margin-right:10px;"></i>Adicionar ao carrinho-->
-                        <!--    </button>-->
-                        <!--</form>-->
-                    </div>
-                    <?php
-                    }else{
-                    ?>
-                    <div class="row justify-content-md-center center-block">
+                        $star_rating.on('click', function() {
+                          $star_rating.siblings('input.rating-value').val($(this).data('rating'));
+                        //   document.getElementById("demo").innerHTML = parseInt($(this).data('rating'));
+                        //   estrela = parseInt($(this).data('rating'));
+                          estrela = String($(this).data('rating'));
+                          console.log(estrela);
+                        //   document.getElementById("demo").innerHTML = estrela;
+                          return SetRatingStar();
+                        });
+                        
+                        SetRatingStar();
+                        $(document).ready(function() {
+                        
+                        });
+                        
+                        function Enviar(){
+                            window.location.href="http://libsys.pe.hu/pages/avaliar.php?estrela="+estrela+"&id_compra=<?=$id_compra?>";
+                        }
+                        
+                    </script>
+                    <!-- estrelas de avaliacao -->
 
-                        <form method="post" action="#" name="formcomprar" id="formcomprar">
-                            <!--armazena o id do livro para mandar para a  pagina de detalhamento-->
-                            <input type="hidden" name="id" value="<?=$linha['id']?>"/>
-                            <button type="button" name="id" value="<?=$linha['id']?>" class="btn btn-success waves-effect" disabled
-                                    data-toggle="modal" data-target="#modalComprarLivro">
-                                <i class="fa fa-shopping-cart" style="margin-right:10px;"></i>Comprar</button>
-                        </form>
-                        <!--<form method="post" action="#" name="formcomprar" id="formcomprar">-->
-                            <!--armazena o id do livro para mandar para a  pagina de detalhamento-->
-                        <!--    <input type="hidden" name="id" value="<?=$linha['id']?>"/>-->
-                        <!--    <button name="id" value="<?=$linha['id']?>" class="btn btn-outline-success waves-effect" disabled>-->
-                        <!--        <i class="fa fa-shopping-cart" style="margin-right:10px;"></i>Adicionar ao carrinho-->
-                        <!--    </button>-->
-                        <!--</form>-->
+                    <div class="row justify-content-md-center center-block">
+                        <a onclick="Enviar()" class="btn btn-outline-success waves-effect ">Avaliar</a>
                     </div>
-                    <?php  
-                    }
-                    ?>
+                    
                 </div>
                 <div id="descricao" class="row container" style="margin: 10px; padding-top:0px; border-radius: 10px; border: 1px solid #2E2E2E;">
                     <div id="descricao-title" class="col" style="margin: 10px; margin-bottom:0px; padding-top:0px;;">
@@ -699,6 +602,8 @@ Autores: Felipe Gomes
     <script type="text/javascript" src="../js/bootstrap.min.js"></script>
     <!-- MDB core JavaScript -->
     <script type="text/javascript" src="../js/mdb.min.js"></script>
+    <script src="../js/jquery.bootstrap.wizard.js"></script>
+    <script src="../js/jquery.bootstrap.wizard.min.js"></script>
 </body>
 
 </html>
